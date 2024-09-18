@@ -1,2 +1,2 @@
 # Platformer
-simple platformer game made with c (a learning project)
+simple platformer game made with c++ (a learning project)
