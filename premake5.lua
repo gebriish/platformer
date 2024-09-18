@@ -19,7 +19,7 @@ project "Platformer"
     objdir    "%{wks.location}/obj/%{cfg.name}/%{prj.name}"
 
     files {
-        "src/**.c",
+        "src/**.cpp",
         "src/**.h"
     }
 
