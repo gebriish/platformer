@@ -1,6 +1,9 @@
 #include <iostream>
+#include "types.h"
 
 int main()
 {
-	printf("hello, world\n");
+	f32 val = 5.0f;
+	
+	std::cout << val << std::endl;
 }
