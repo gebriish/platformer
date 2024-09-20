@@ -29,7 +29,8 @@ project "Platformer"
     }
 
     links {
-        "GLFW"
+        "GLFW",
+        "Gl"
     }
 
     filter "configurations:Debug"

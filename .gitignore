@@ -3,6 +3,9 @@ obj/
 .vs/
 .vscode/
 
+**/Makefile
+**/*.make
+
 **/*.sln
 **/*.vcxproj
 **/*.*.user
