@@ -9,7 +9,7 @@
 namespace APP
 {
 	f32 deltaTime = 0.0f;
-
+	f32 aspectRatio = 1.6f;
 	ENGINE::GRAPHICS::ShaderProgram* program;
 	u32 VAO, VBO, EBO;
 
@@ -46,7 +46,14 @@ namespace APP
 
 
 		program = ENGINE::GRAPHICS::ShaderProgram::FromGLSLTextFiles("res/sprite.vert", "res/sprite.frag");
+	
+
+		glUseProgram(program->GetRendererID());
+		glUniform1f(glGetUniformLocation(program->GetRendererID(), "uAspectRatio"), aspectRatio);
+
 	}
+
+
 
 	void SandboxApp::Update(f32 dt)
 	{
@@ -70,6 +77,12 @@ namespace APP
 		{
 			case EventType::RESIZE : {
 				glViewport(0, 0, e.resizeData.width, e.resizeData.height);
+
+				aspectRatio = (f32)e.resizeData.width / e.resizeData.height;
+
+				glUseProgram(program->GetRendererID());
+				glUniform1f(glGetUniformLocation(program->GetRendererID(), "uAspectRatio"), aspectRatio);
+
 				break;
 			}
 
@@ -81,9 +94,21 @@ namespace APP
 							std::cout << int(1/deltaTime) << std::endl;
 							break;
 						}
-					}
-				}
 
+						case KEY_TAB: {
+							int polygonMode;
+							glGetIntegerv(GL_POLYGON_MODE, &polygonMode);
+
+							if (polygonMode == GL_FILL)
+								polygonMode = GL_LINE;
+							else 
+								polygonMode = GL_FILL;
+
+							glPolygonMode(GL_FRONT_AND_BACK, polygonMode);
+						}
+					}
+
+				}
 				break;
 			}
 
