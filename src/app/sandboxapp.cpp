@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <graphics/shaderprogram.h>
 
+
 namespace APP
 {
 
@@ -53,6 +54,18 @@ namespace APP
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+	}
+
+
+	void SandboxApp::OnEvent(ENGINE::CORE::Event& e)
+	{
+		switch(e.type)
+		{
+			case ENGINE::CORE::EventType::RESIZE : {
+				glViewport(0, 0, e.resizeData.width, e.resizeData.height);
+				break;
+			}
+		}
 	}
 
 

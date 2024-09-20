@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include <core/event.h>
+
 namespace ENGINE::CORE
 {
 	static bool s_GlfwInitialize = false;
@@ -44,6 +46,55 @@ namespace ENGINE::CORE
 			exit(EXIT_FAILURE);
 		}
 		glfwMakeContextCurrent(window.GetContext());
+		window.setWindowUserPointer();
+
+		glfwSetFramebufferSizeCallback(window.GetContext(), [](GLFWwindow* event_window, int width, int height)
+		{	
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
+			data.width = width;
+			data.height = height;
+
+			Event e = Event::CreateResizeEvent(width, height);
+			data.EventCallback(e);
+		});
+
+
+		glfwSetKeyCallback(window.GetContext(), [](GLFWwindow* event_window, int key, int scancode, int action, int mods)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
+			
+			Event e = Event::CreateKeyEvent(key, scancode, action, mods);
+			data.EventCallback(e);
+
+		});
+
+		glfwSetCursorPosCallback(window.GetContext(), [](GLFWwindow* event_window, double xpos, double ypos)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
+
+			Event e = Event::CreateCursorMoveEvent(xpos, ypos);
+			data.EventCallback(e);
+		});
+
+		glfwSetMouseButtonCallback(window.GetContext(), [](GLFWwindow* event_window, int button, int action, int mods)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
+
+			Event e = Event::CreateMouseButtonEvent(button, action, mods);
+			data.EventCallback(e);
+		});
+
+		/*
+		glfwSetWindowCloseCallback(window.GetContext(), [](GLFWwindow* event_window){
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			
+		});
+		*/
+
+	}
+
+	void Window::setWindowUserPointer() {
+		glfwSetWindowUserPointer(GetContext(), &m_WindowData);
 	}
 
 	void Window::Update()
@@ -51,4 +102,10 @@ namespace ENGINE::CORE
 		glfwPollEvents();
 		glfwSwapBuffers(this->GetContext());
 	}
+
+	void Window::SetEventCallback(const EventCallbackFn& callback) 
+	{
+		m_WindowData.EventCallback = callback;
+	}
+
 }

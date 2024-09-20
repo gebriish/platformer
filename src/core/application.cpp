@@ -17,6 +17,8 @@ namespace ENGINE::CORE
 			exit(EXIT_FAILURE);
 		}    
 
+		MainWindow.SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+
 	}
 
 	Application::~Application()

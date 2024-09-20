@@ -11,5 +11,7 @@ namespace APP
 		virtual void Update(f32 dt) override;
 		virtual void Cleanup() override;
 
+		virtual void OnEvent(ENGINE::CORE::Event& e) override;
+
 	};
 }

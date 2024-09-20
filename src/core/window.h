@@ -2,13 +2,18 @@
 
 #include <types.h>
 #include <string>
+#include <functional>
 
 struct GLFWwindow;
 
 namespace ENGINE::CORE {
 
+	struct Event;
+
 	class Window
 	{
+		using EventCallbackFn = std::function<void(Event&)>;
+
 	public:
 		Window(u16 width, u16 height, const std::string& title);
 		~Window();
@@ -23,13 +28,20 @@ namespace ENGINE::CORE {
 		inline std::string GetTitle() const { return m_WindowData.title; }
 		inline GLFWwindow* GetContext() const { return m_WindowData.glfwWindow; }
 
+		void SetEventCallback(const EventCallbackFn& callback);
+
 	private:
-		struct {
+		void setWindowUserPointer();
+
+	private:
+		struct WindowData{
 
 			u16 width;
 			u16 height;
 			std::string title;
 			GLFWwindow* glfwWindow = nullptr;
+
+			EventCallbackFn EventCallback;
 
 		} m_WindowData;
 	};
