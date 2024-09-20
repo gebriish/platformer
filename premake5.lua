@@ -15,8 +15,8 @@ project "Platformer"
     language "C++"
     cppdialect "C++20"
 
-    targetdir "%{wks.location}/bin/%{cfg.name}/%{prj.name}"
-    objdir    "%{wks.location}/obj/%{cfg.name}/%{prj.name}"
+    targetdir "%{wks.location}/bin/%{cfg.name}-%{prj.name}"
+    objdir    "%{wks.location}/obj/%{cfg.name}-%{prj.name}"
 
     files {
         "src/**.cpp",
@@ -30,7 +30,7 @@ project "Platformer"
 
     links {
         "GLFW",
-        "Gl"
+        "GL"
     }
 
     filter "configurations:Debug"

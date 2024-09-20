@@ -1,31 +1,15 @@
 #include <GLFW/glfw3.h>
+#include "window.h"
 
-int main(void)
+int main()
 {
-    GLFWwindow* window;
+    ENGINE::Window window(800, 500, "Delve");
+    ENGINE::Window::Initialize(window);
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
-
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
+    while(!glfwWindowShouldClose(window.GetContext()))
     {
-        glfwTerminate();
-        return -1;
+        window.Update();
     }
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-    return 0;
+    glfwDestroyWindow(window.GetContext());
 }
