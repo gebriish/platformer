@@ -15,7 +15,7 @@ namespace ENGINE
 	{}
 
 	Window::~Window()
-	{	
+	{
 	}
 
 	void Window::SetContext(GLFWwindow* window) 

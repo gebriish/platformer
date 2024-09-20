@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <types.h>
 #include <string>
@@ -35,5 +34,3 @@ namespace ENGINE {
 		} m_WindowData;
 	};
 }
-
-#endif
