@@ -23,6 +23,15 @@ project "Platformer"
         "src/**.h"
     }
 
+    includedirs {
+        "src",
+        "vendor/GLFW/include"
+    }
+
+    links {
+        "GLFW"
+    }
+
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "on"
@@ -31,3 +40,8 @@ project "Platformer"
     filter "configurations:Release"
         defines { "NDEBUG" }
         optimize "on"
+
+
+group "dependencies"
+    include "vendor/glfw.lua"
+group ""
