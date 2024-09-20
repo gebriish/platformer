@@ -25,12 +25,13 @@ project "Platformer"
 
     includedirs {
         "src",
-        "vendor/GLFW/include"
+        "vendor/GLFW/include",
+        "vendor/GLAD/include"
     }
 
     links {
         "GLFW",
-        "GL"
+        "GLAD"
     }
 
     filter "configurations:Debug"
@@ -40,9 +41,10 @@ project "Platformer"
         
     filter "configurations:Release"
         defines { "NDEBUG" }
-        optimize "on"
+        optimize "speed"
 
 
 group "dependencies"
     include "vendor/glfw.lua"
+    include "vendor/glad.lua"
 group ""
