@@ -4,7 +4,7 @@
 
 namespace APP
 {
-	class SandboxApp : public ENGINE::Application
+	class SandboxApp : public ENGINE::CORE::Application
 	{
 	protected:
 		virtual void Init() override;

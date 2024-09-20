@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-namespace ENGINE
+namespace ENGINE::CORE
 {
 	static bool s_GlfwInitialize = false;
 

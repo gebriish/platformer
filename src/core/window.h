@@ -5,7 +5,7 @@
 
 struct GLFWwindow;
 
-namespace ENGINE {
+namespace ENGINE::CORE {
 
 	class Window
 	{

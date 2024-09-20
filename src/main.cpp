@@ -1,4 +1,4 @@
-#include <app/sandbox_app.h>
+#include <app/sandboxapp.h>
 
 int main()
 {

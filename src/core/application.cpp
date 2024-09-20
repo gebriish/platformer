@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-namespace ENGINE
+namespace ENGINE::CORE
 {
 	Application::Application()
 	{

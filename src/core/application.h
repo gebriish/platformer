@@ -2,7 +2,7 @@
 
 #include "window.h"
 
-namespace ENGINE
+namespace ENGINE::CORE
 {
 	class Application
 	{
