@@ -3,9 +3,12 @@
 #include <glad/glad.h>
 #include <graphics/shaderprogram.h>
 
+#include <iostream>
+
 
 namespace APP
 {
+	f32 deltaTime = 0.0f;
 
 	ENGINE::GRAPHICS::ShaderProgram* program;
 	u32 VAO, VBO, EBO;
@@ -13,8 +16,8 @@ namespace APP
 	void SandboxApp::Init()
 	{
 		float vertices[] = {
-			0.5f,  0.5f, 0.0f,  // top right
-			0.5f, -0.5f, 0.0f,  // bottom right
+			 0.5f,  0.5f, 0.0f,  // top right
+			 0.5f, -0.5f, 0.0f,  // bottom right
 			-0.5f, -0.5f, 0.0f,  // bottom left
 			-0.5f,  0.5f, 0.0f   // top left 
 		};
@@ -47,6 +50,8 @@ namespace APP
 
 	void SandboxApp::Update(f32 dt)
 	{
+		deltaTime = dt;
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -59,10 +64,30 @@ namespace APP
 
 	void SandboxApp::OnEvent(ENGINE::CORE::Event& e)
 	{
+		using namespace ENGINE::CORE;
+
 		switch(e.type)
 		{
-			case ENGINE::CORE::EventType::RESIZE : {
+			case EventType::RESIZE : {
 				glViewport(0, 0, e.resizeData.width, e.resizeData.height);
+				break;
+			}
+
+			case EventType::KEY : {
+
+				if(e.keyData.action == PRESS) {
+					switch (e.keyData.key) {
+						case KEY_F: {
+							std::cout << int(1/deltaTime) << std::endl;
+							break;
+						}
+					}
+				}
+
+				break;
+			}
+
+			case EventType::CURSOR_MOVE : {
 				break;
 			}
 		}

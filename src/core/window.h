@@ -43,6 +43,8 @@ namespace ENGINE::CORE {
 
 			EventCallbackFn EventCallback;
 
+			std::pair<f64, f64> cursorPosition;
+
 		} m_WindowData;
 	};
 }

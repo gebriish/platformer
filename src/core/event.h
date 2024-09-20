@@ -1,4 +1,5 @@
 #pragma once
+#include <core/keycodes.h>
 
 namespace ENGINE::CORE
 {
@@ -14,7 +15,7 @@ namespace ENGINE::CORE
 
         union {
             struct { int width, height; } resizeData;  
-            struct { double xPos, yPos; } cursorMoveData;  
+            struct { double xPos, yPos, Dx, Dy; } cursorMoveData;  
             struct { int button, action, mods; } mouseButtonData; 
             struct { int key, scancode, action, mods; } keyData;  
         };
@@ -27,9 +28,9 @@ namespace ENGINE::CORE
             return e;
         }
 
-        static Event CreateCursorMoveEvent(double xPos, double yPos) {
+        static Event CreateCursorMoveEvent(double xPos, double yPos, double dx, double dy) {
             Event e(EventType::CURSOR_MOVE);
-            e.cursorMoveData = { xPos, yPos };
+            e.cursorMoveData = { xPos, yPos , dx, dy};
             return e;
         }
 

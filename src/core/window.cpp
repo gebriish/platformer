@@ -72,8 +72,11 @@ namespace ENGINE::CORE
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
 
-			Event e = Event::CreateCursorMoveEvent(xpos, ypos);
+			Event e = Event::CreateCursorMoveEvent(xpos, ypos, xpos - data.cursorPosition.first, ypos - data.cursorPosition.second);
 			data.EventCallback(e);
+
+			data.cursorPosition.first  = xpos;
+			data.cursorPosition.second = ypos;
 		});
 
 		glfwSetMouseButtonCallback(window.GetContext(), [](GLFWwindow* event_window, int button, int action, int mods)
