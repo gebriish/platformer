@@ -44,7 +44,8 @@ namespace APP
 		if(INPUT::IsKeyPressed(KEY_D))
 			printf("%i\n", (int)(1/dt));
 
-		e0.AddRotation(dt * 90.0f);
+		if(INPUT::IsKeyPressed(KEY_R))
+			e0.AddRotation(dt * 90.0f);
 		
 		RENDERER::Prepair();
 		RENDERER::Render(AspectRatio);
@@ -59,6 +60,15 @@ namespace APP
 			case EventType::RESIZE : {
 				AspectRatio = (f32) e.resizeData.width/e.resizeData.height;
 				glViewport(0, 0, e.resizeData.width, e.resizeData.height);
+				break;
+			}
+
+			case EventType::CURSOR_MOVE: {
+				if(INPUT::IsKeyPressed(KEY_SPACE)) {
+					f32 dx = e.cursorMoveData.Dx / Window::Get().GetWidth();
+					f32 dy = -e.cursorMoveData.Dy / Window::Get().GetHeight();
+					e1.AddPosition(dx * 2 * AspectRatio, dy * 2);
+				}
 				break;
 			}
 		}

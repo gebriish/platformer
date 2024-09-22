@@ -44,7 +44,7 @@ namespace ENGINE::WORLD
 
 	void Entity::AddPosition(f32 x, f32 y)
 	{
-		m_Position += (ENGINE::MATH::vec2) {x, y};
+		m_Position +=  {x, y};
 
 		SetUpdateFlag(true);
 	}
