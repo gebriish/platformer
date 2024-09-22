@@ -7,6 +7,7 @@
 
 namespace ENGINE::CORE
 {
+
 	Application::Application()
 	{
 		Window::Initialize(MainWindow);
@@ -18,7 +19,6 @@ namespace ENGINE::CORE
 		}    
 
 		MainWindow.SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
-
 	}
 
 	Application::~Application()

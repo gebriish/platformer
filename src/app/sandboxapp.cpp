@@ -1,131 +1,74 @@
 #include "sandboxapp.h"
 
+#include <world/entity.h>
+#include <renderer/renderer.h>
+
+#include <core/input.h>
+
 #include <glad/glad.h>
-#include <graphics/shaderprogram.h>
 
-#include <iostream>
-
+using namespace ENGINE;
 
 namespace APP
 {
+	WORLD::Entity e0(0);
+	WORLD::Entity e1(1);
+
+	f32 AspectRatio = 1.6f;
+
 	f32 deltaTime = 0.0f;
-	f32 aspectRatio = 1.6f;
-	ENGINE::GRAPHICS::ShaderProgram* program;
-	u32 VAO, VBO, EBO;
 
 	void SandboxApp::Init()
-	{
-		float vertices[] = {
-			 0.5f,  0.5f, 0.0f,  // top right
-			 0.5f, -0.5f, 0.0f,  // bottom right
-			-0.5f, -0.5f, 0.0f,  // bottom left
-			-0.5f,  0.5f, 0.0f   // top left 
-		};
-		unsigned int indices[] = {  // note that we start from 0!
-			0, 1, 3,  // first Triangle
-			1, 2, 3   // second Triangle
-		};
+	{	
+		e0.SetPosition(-0.5f, 0.0f);
+		e1.SetPosition(0.5f, 0.0f);
 
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-		glGenBuffers(1, &EBO);
-		// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-		glBindVertexArray(VAO);
+		e0.SetSize(1.3, 1.3);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		e0.SetRotation(-12.0f);
+		e1.SetRotation(45.0f);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		e0.SetColor(RENDERER::Color(204, 57, 47, 255));
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
+		RENDERER::Init();
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0); 
-		glBindVertexArray(0); 
-
-
-		program = ENGINE::GRAPHICS::ShaderProgram::FromGLSLTextFiles("res/sprite.vert", "res/sprite.frag");
-	
-
-		glUseProgram(program->GetRendererID());
-		glUniform1f(glGetUniformLocation(program->GetRendererID(), "uAspectRatio"), aspectRatio);
-
+		RENDERER::FlushEntityRenderQueue();
+		RENDERER::QueueEntityRenderCall(e1);
+		RENDERER::QueueEntityRenderCall(e0);
 	}
-
-
 
 	void SandboxApp::Update(f32 dt)
 	{
 		deltaTime = dt;
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+		if(INPUT::IsKeyPressed(KEY_D))
+			printf("%i\n", (int)(1/dt));
 
-		glUseProgram(program->GetRendererID());
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+		e0.AddRotation(dt * 90.0f);
+		
+		RENDERER::Prepair();
+		RENDERER::Render(AspectRatio);
 	}
-
 
 	void SandboxApp::OnEvent(ENGINE::CORE::Event& e)
 	{
 		using namespace ENGINE::CORE;
 
-		switch(e.type)
+		switch (e.type)
 		{
 			case EventType::RESIZE : {
+				AspectRatio = (f32) e.resizeData.width/e.resizeData.height;
 				glViewport(0, 0, e.resizeData.width, e.resizeData.height);
-
-				aspectRatio = (f32)e.resizeData.width / e.resizeData.height;
-
-				glUseProgram(program->GetRendererID());
-				glUniform1f(glGetUniformLocation(program->GetRendererID(), "uAspectRatio"), aspectRatio);
-
-				break;
-			}
-
-			case EventType::KEY : {
-
-				if(e.keyData.action == PRESS) {
-					switch (e.keyData.key) {
-						case KEY_F: {
-							std::cout << int(1/deltaTime) << std::endl;
-							break;
-						}
-
-						case KEY_TAB: {
-							int polygonMode;
-							glGetIntegerv(GL_POLYGON_MODE, &polygonMode);
-
-							if (polygonMode == GL_FILL)
-								polygonMode = GL_LINE;
-							else 
-								polygonMode = GL_FILL;
-
-							glPolygonMode(GL_FRONT_AND_BACK, polygonMode);
-						}
-					}
-
-				}
-				break;
-			}
-
-			case EventType::CURSOR_MOVE : {
 				break;
 			}
 		}
+
 	}
 
 
 	void SandboxApp::Cleanup()
 	{
-		glDeleteVertexArrays(1, &VAO);
-    	glDeleteBuffers(1, &VBO);
-    	glDeleteBuffers(1, &EBO);
-
-		delete program;
+		RENDERER::Cleanup();
 	}
 
 }

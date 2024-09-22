@@ -26,7 +26,7 @@ project "Platformer"
     includedirs {
         "src",
         "vendor/GLFW/include",
-        "vendor/GLAD/include"
+        "vendor/GLAD/include",
     }
 
     links {

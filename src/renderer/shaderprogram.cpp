@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 
-namespace ENGINE::GRAPHICS
+namespace ENGINE::RENDERER
 {
 	static std::string ReadFileAsString(const std::string& filepath)
 	{

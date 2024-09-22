@@ -7,21 +7,23 @@
 
 namespace ENGINE::CORE
 {
+	Window* Window::s_Instance = nullptr;
 	static bool s_GlfwInitialize = false;
 
-	Window::Window(u16 width = 1280,
-		u16 height = 800,
-		const std::string& title = "Window")
+	Window::Window(u16 width,
+		u16 height,
+		const std::string& title)
 
 		: m_WindowData({width, height, title})
-	{}
+	{
+	}
 
 	Window::~Window()
 	{
 	}
 
 	void Window::SetContext(GLFWwindow* window) 
-		{ m_WindowData.glfwWindow = window; }
+		{ m_GLFWwindow = window; }
 
 	void Window::Initialize(Window& window)
 	{
@@ -96,6 +98,8 @@ namespace ENGINE::CORE
 			
 		});
 		*/
+
+		Window::s_Instance = &window;
 
 	}
 

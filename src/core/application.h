@@ -20,7 +20,7 @@ namespace ENGINE::CORE
 		virtual void Cleanup() = 0;
 
 		virtual void OnEvent(Event& e) = 0;
-
+		
 	protected:
 		Window MainWindow{800, 500, "Platformer"};
 	};

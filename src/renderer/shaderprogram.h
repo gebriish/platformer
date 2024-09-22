@@ -3,7 +3,7 @@
 #include <string>
 #include <glad/glad.h>
 
-namespace ENGINE::GRAPHICS
+namespace ENGINE::RENDERER
 {
 	class ShaderProgram
 	{
