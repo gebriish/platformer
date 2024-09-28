@@ -16,5 +16,5 @@ namespace ENGINE::RENDERER
 	void QueueEntityRenderCall(ENGINE::WORLD::Entity& entity);
 	
 	void Prepair();
-	void Render(f32);
+	void Render(u16, u16);
 }

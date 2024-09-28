@@ -7,6 +7,7 @@
 
 #include <glad/glad.h>
 
+
 using namespace ENGINE;
 
 namespace APP
@@ -20,14 +21,12 @@ namespace APP
 
 	void SandboxApp::Init()
 	{	
-		e0.SetPosition(-0.5f, 0.0f);
-		e1.SetPosition(0.5f, 0.0f);
+		e0.SetPosition(-32, 0.0f);
+		e1.SetPosition(32, 0.0f);
 
-		e0.SetSize(1.3, 1.3);
-
-		e0.SetRotation(-12.0f);
-		e1.SetRotation(45.0f);
-
+		e0.SetSize(64, 64);
+		e1.SetSize(64, 64);
+		
 		e0.SetColor(RENDERER::Color(204, 57, 47, 255));
 
 		RENDERER::Init();
@@ -45,10 +44,10 @@ namespace APP
 			printf("%i\n", (int)(1/dt));
 
 		if(INPUT::IsKeyPressed(KEY_R))
-			e0.AddRotation(dt * 90.0f);
+			e0.AddRotation(dt * 2.0f);
 		
 		RENDERER::Prepair();
-		RENDERER::Render(AspectRatio);
+		RENDERER::Render(MainWindow.GetWidth(), MainWindow.GetHeight());
 	}
 
 	void SandboxApp::OnEvent(ENGINE::CORE::Event& e)
@@ -57,17 +56,31 @@ namespace APP
 
 		switch (e.type)
 		{
-			case EventType::RESIZE : {
-				AspectRatio = (f32) e.resizeData.width/e.resizeData.height;
+
+			case EventType::KEY: {
+				if(e.keyData.action == PRESS)
+				{
+					if(e.keyData.key == KEY_W)
+					{
+						int polygon_mode;
+						glGetIntegerv(GL_POLYGON_MODE, &polygon_mode);
+						glPolygonMode(GL_FRONT_AND_BACK, polygon_mode == GL_FILL ? GL_LINE : GL_FILL);
+					}
+				}
+
+				break;
+			}
+
+			case EventType::RESIZE: {
 				glViewport(0, 0, e.resizeData.width, e.resizeData.height);
 				break;
 			}
 
 			case EventType::CURSOR_MOVE: {
 				if(INPUT::IsKeyPressed(KEY_SPACE)) {
-					f32 dx = e.cursorMoveData.Dx / Window::Get().GetWidth();
-					f32 dy = -e.cursorMoveData.Dy / Window::Get().GetHeight();
-					e1.AddPosition(dx * 2 * AspectRatio, dy * 2);
+					f32 dx = e.cursorMoveData.Dx;
+					f32 dy = -e.cursorMoveData.Dy;
+					e1.AddPosition(dx, dy);
 				}
 				break;
 			}

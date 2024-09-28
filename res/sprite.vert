@@ -1,26 +1,19 @@
 #version 410 core
 
-#define PI 3.14159265359
-
 layout (location = 0) in vec2 aPos;
+layout (location = 1) in vec4 aCol;
+layout (location = 2) in vec2 aTexCoord;
 
-uniform vec2 uOffset;
-uniform vec2 uSize;
-uniform float uRotation;
-uniform float uAspectRatio;
+out vec4 vCol;
+out vec2 vUV;
 
-float toRadians(float degrees) {
-	return degrees * PI/180.0;
-}
+uniform vec2 uResolution;
 
 void main()
 {
-	vec2 p = aPos * uSize;
+	vUV  = aTexCoord;
+	vCol = aCol; 
 
-	float s = sin(toRadians(uRotation));
-	float c = cos(toRadians(uRotation));
-
-	vec2 pr = vec2(p.x * c - p.y * s, p.y * c + p.x * s) + uOffset;
-
-	gl_Position = vec4(pr / vec2(uAspectRatio, 1.0), 0.0, 1.0);
+	vec2 p = aPos;
+	gl_Position = vec4(p * 2/ uResolution , 0.0, 1.0);
 }
