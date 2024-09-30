@@ -7,7 +7,8 @@ namespace ENGINE::CORE
         RESIZE = 0,
         CURSOR_MOVE = 1,
         MOUSE_BUTTON = 2,
-        KEY = 3
+        KEY = 3,
+        SCROLL = 4,
     };
 
     struct Event {
@@ -17,7 +18,8 @@ namespace ENGINE::CORE
             struct { int width, height; } resizeData;  
             struct { double xPos, yPos, Dx, Dy; } cursorMoveData;  
             struct { int button, action, mods; } mouseButtonData; 
-            struct { int key, scancode, action, mods; } keyData;  
+            struct { int key, scancode, action, mods; } keyData;
+            struct { double xScroll, yScroll; } scrollData;
         };
 
         Event(EventType eventType) : type(eventType) {}
@@ -25,6 +27,13 @@ namespace ENGINE::CORE
         static Event CreateResizeEvent(int width, int height) {
             Event e(EventType::RESIZE);
             e.resizeData = { width, height };
+            return e;
+        }
+
+        static Event CreateScrollEvent(double x, double y) {
+            Event e(EventType::SCROLL);
+            e.scrollData.xScroll = x;
+            e.scrollData.yScroll = y;
             return e;
         }
 

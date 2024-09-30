@@ -92,6 +92,13 @@ namespace ENGINE::CORE
 			data.EventCallback(e);
 		});
 
+		glfwSetScrollCallback(window.GetContext(), [](GLFWwindow* event_window, double x, double y)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
+			Event e = Event::CreateScrollEvent(x, y);
+			data.EventCallback(e);
+		});
+
 		/*
 		glfwSetWindowCloseCallback(window.GetContext(), [](GLFWwindow* event_window){
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
