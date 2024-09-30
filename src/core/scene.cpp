@@ -1,6 +1,7 @@
 #include "scene.h"
 #include <algorithm>
 #include <iostream>
+#include <glad/glad.h>
 
 namespace ENGINE::CORE {
 
@@ -38,6 +39,10 @@ namespace ENGINE::CORE {
 
 	void Scene::cleanup()
 	{
+		for(auto e : m_Entities)
+			if(e->Texture.ID)
+				glDeleteTextures(1, &e->Texture.ID);
+		
 		m_Entities.clear();
 	}
 

@@ -2,6 +2,8 @@
 
 
 uniform vec4 uColor;
+uniform sampler2D uSprite;
+
 
 in vec2 vUV;
 
@@ -9,5 +11,5 @@ out vec4 FragColor;
 
 void main()
 {
-	FragColor = vec4(uColor);
+	FragColor = texture(uSprite, vUV) * uColor;
 }

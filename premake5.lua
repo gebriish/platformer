@@ -27,6 +27,7 @@ project "Platformer"
         "src",
         "vendor/GLFW/include",
         "vendor/GLAD/include",
+        "vendor/STB/include"
     }
 
     links {

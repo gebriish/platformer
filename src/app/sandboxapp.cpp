@@ -1,6 +1,7 @@
 #include "sandboxapp.h"
 #include <core/scene.h>
 #include <core/input.h>
+#include <renderer/texture.h>
 
 #include <renderer/render.h>
 
@@ -12,22 +13,52 @@ namespace APP
 	CORE::Scene* scene;
 	CORE::Camera camera;
 
+	float t = 0.0f;
+	float deltatime = 0.0f;
 
 	void SandboxApp::Init()
 	{
-		scene = new CORE::Scene;
-		auto e = scene->CreateEntity();
+		RENDERER::Init();
 
-		e->Size = {32};
-		e->Color = {0xa5, 0x4a, 0x34, 0xff};
+		camera.Scale = 0.25f;
+
+		scene = new CORE::Scene;
+	    auto e = scene->CreateEntity();
+
+		e->Texture = RENDERER::LoadTexture("res/_Run.png");
+		e->Size = {e->Texture.Width/10.0f, (float)e->Texture.Height};
+		e->UV1.x = 1/10.0f;
+		e->Position.x = -60.0f;
+
+		auto a = scene->CreateEntity();
+
+		a->Texture = RENDERER::LoadTexture("res/_Idle.png");
+		a->Size = {a->Texture.Width/10.0f, (float)a->Texture.Height};
+		a->UV1.x = 1/10.0f;
+		a->Position.x = 60.0f;
 
 		scene->Init();
 
-		RENDERER::Init();
 	}
 
 	void SandboxApp::Update(f32 dt)
 	{
+		deltatime = dt;
+		t += dt;
+
+		if(t > 1/12.0f)
+		{
+			auto e = scene->GetEntityWithIndex(0);
+			e->UV0.x += 1/10.0f;
+			e->UV1.x += 1/10.0f;
+
+			auto a = scene->GetEntityWithIndex(1);
+			a->UV0.x += 1/10.0f;
+			a->UV1.x += 1/10.0f;
+
+			t = 0.0f;
+		}
+
 		MATH::vec2 vel(0.0f, 0.0f);
 		if(INPUT::IsKeyPressed(KEY_W))
 			vel.y = 1.0f;
@@ -70,6 +101,10 @@ namespace APP
 						int polygon_mode;
 						glGetIntegerv(GL_POLYGON_MODE, &polygon_mode);	
 						glPolygonMode(GL_FRONT_AND_BACK, polygon_mode == GL_FILL ? GL_LINE : GL_FILL);
+					}
+					else if(e.keyData.key == KEY_F)
+					{
+						std::cout << int(1/deltatime) << '\n'; 
 					}
 				}
 

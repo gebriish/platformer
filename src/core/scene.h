@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include <renderer/color.h>
+#include <renderer/texture.h>
 #include <cstdio>
 
 #include <math/vec2.h>
@@ -46,9 +47,13 @@ namespace ENGINE::CORE
 		MATH::vec2 Position {0};
 		MATH::vec2 Center {0.0f};
 		MATH::vec2 Size {8};
+
+		MATH::vec2 UV0 {.0f}, UV1{1.0f};
+
 		const char* Tag = "";
 		bool Visible = true;
 		RENDERER::Color Color{255};
+		RENDERER::Texture Texture;
 
 	public:
 		Entity(unsigned int id, Scene& s);
