@@ -59,7 +59,7 @@ namespace ENGINE::RENDERER
 
 	void RenderScene(CORE::Scene& scene, const CORE::Camera& camera)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(camera.ClearColor.GetR(), camera.ClearColor.GetG(), camera.ClearColor.GetB(), camera.ClearColor.GetA());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		glUseProgram(SpriteShader->GetRendererID());

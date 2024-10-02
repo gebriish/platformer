@@ -34,4 +34,9 @@ namespace ENGINE::MATH
             return v/l;
         else return vec2(0);
     }
+
+    vec2 lerp(const vec2& a, const vec2& b, float t)
+    {
+        return a + (b - a) * t;
+    }
 }

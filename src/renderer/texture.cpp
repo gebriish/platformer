@@ -8,7 +8,7 @@
 
 namespace ENGINE::RENDERER
 {
-
+	
 
 	Texture LoadTexture(const char* path)
 	{
@@ -43,6 +43,12 @@ namespace ENGINE::RENDERER
 		t.Height = height;
 
 		return t;
+	}
+
+	void DeleteTexture(const Texture& texture)
+	{
+		printf("Texture(%d) deleted\n", texture.ID);
+		glDeleteTextures(1, &texture.ID);
 	}
 
 }

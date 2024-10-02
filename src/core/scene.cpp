@@ -12,7 +12,7 @@ namespace ENGINE::CORE {
 
 	Entity::~Entity()
     {
-      printf("entity(%d) deleted\n", m_ID);
+      	printf("entity(%d) deleted\n", m_ID);
     }
 
 
@@ -93,7 +93,6 @@ namespace ENGINE::CORE {
 
     	if (it != m_Entities.end()) {
     	  	m_Entities.erase(it, m_Entities.end());
-    	  	std::cout << "Entity(" << id << ") removed\n";
     	} else {
     	  	std::cout << "Entity(" << id << ") doesn't exist, cannot remove\n";
     	}

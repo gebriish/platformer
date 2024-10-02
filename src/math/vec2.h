@@ -90,4 +90,5 @@ namespace ENGINE::MATH
     f32 dot(const vec2& a, const vec2& b);
     f32 length(const vec2& v);
     vec2 normalize(const vec2& v);
+    vec2 lerp(const vec2& a, const vec2& b, float t);
 }

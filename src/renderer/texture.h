@@ -1,5 +1,6 @@
 #pragma once
 #include <types.h>
+#include <vector>
 
 namespace ENGINE::RENDERER
 {
@@ -12,4 +13,5 @@ namespace ENGINE::RENDERER
 	};
 
 	Texture LoadTexture(const char* path);
+	void DeleteTexture(const Texture& texture);
 }

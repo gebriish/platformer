@@ -17,4 +17,15 @@ namespace ENGINE::CORE
 		m_Resolution.y = height;
 	}
 
+	MATH::vec2 Camera::ScreenToWorld(double x, double y)
+	{
+		double cornerx = Position.x - GetResolution(true).x / 2.0f;
+		double cornery = Position.y + GetResolution(true).y / 2.0f;
+
+		x = x * Scale;
+		y = y * Scale;
+
+		return MATH::vec2{f32(cornerx + x), f32(cornery - y)};
+	}
+
 }

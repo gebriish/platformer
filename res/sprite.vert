@@ -18,6 +18,7 @@ void main()
 {
 	vUV  = (aPos + 0.5f) * (uUV1 - uUV0) + uUV0;
 
+	
 	vec2 p = (aPos * uSize)- uOffset + uPosition - uCamera;
 	gl_Position = vec4(p * 2 / uResolution, 0.0, 1.0);
 }

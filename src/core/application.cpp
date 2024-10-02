@@ -18,6 +18,9 @@ namespace ENGINE::CORE
 			exit(EXIT_FAILURE);
 		}    
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		MainWindow.SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 	}
 
