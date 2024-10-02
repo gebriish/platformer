@@ -1,14 +1,7 @@
-# entity xpos ypos xcenter ycenter xsize ysize uv0x uv0y uv1x uv1y tag visible texture_index
+# entity xpos ypos xsize ysize uv0x uv0y uv1x uv1y tag visible texture_index r g b a
 # texture path
 
 texture res/Texture/white.png
+texture res/Texture/tile.png
 
-texture res/Texture/tile0.png
-texture res/Texture/tile1.png
-texture res/Texture/tile2.png
-texture res/Texture/tile3.png
-
-entity 0 0 0 0 48 64 0.0 0.0 1.0 1.0 PROP true 1
-entity 48 0 0 0 48 64 0.0 0.0 1.0 1.0 PROP true 2
-entity -48 0 0 0 48 64 0.0 0.0 1.0 1.0 PROP true 3
-entity 96 0 0 0 48 64 0.0 0.0 1.0 1.0 PROP true 4
+entity 0 0 128 128 0.0 0.0 1.0 1.0 TAG true 1 255 255 255 255

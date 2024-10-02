@@ -5,6 +5,8 @@
 #include <renderer/render.h>
 #include "sceneloader.h"
 
+#include <cmath>
+
 using namespace ENGINE;
 
 namespace APP
@@ -22,19 +24,48 @@ namespace APP
 	{
 		RENDERER::Init();
 
-		camera.Scale = 0.25f;
+		camera.Scale = 0.5f;
 		camera.ClearColor = {0x18};
 
 		scene = new CORE::Scene;
 		LoadScene("res/demo.scene", *scene);
-		scene->Init();
+
+		auto e = scene->CreateEntity();
+		e->Texture = scene->GetTexture(1);
+		e->Size = {8};
+		e->UV0 = {0.0f, 0.375f};
+		e->UV1 = e->UV0 + MATH::vec2{1/16.0f, 1/16.0f};
+		e->Position = {20, -12};
 	}
 
 
+	int sprite_index = 0;
+	float x = 0;
 	void SandboxApp::Update(f32 dt)
 	{
 		deltatime = dt;
 		t += dt;
+		x += dt;
+
+		auto e = scene->GetEntityWithIndex(1);	
+
+
+		if(t > 1/8.0f)
+		{
+			
+			if(sprite_index < 9) {
+				e->UV0.x += 1/16.0f;
+				e->UV1.x += 1/16.0f;
+			}			
+			else{
+				e->UV0 = {0.0f, 0.375f};
+				e->UV1 = e->UV0 + MATH::vec2{1/16.0f, 1/16.0f};
+				sprite_index = 0;
+			}
+			sprite_index++;
+			t = 0.0f;
+		}
+
 
 		if(INPUT::IsKeyPressed(KEY_E))
 			camera.Scale -= dt;	
@@ -52,13 +83,7 @@ namespace APP
 		if(INPUT::IsKeyPressed(KEY_S))
 			pos.y -= dt * 256;
 
-
-		camera.Position = MATH::lerp(camera.Position, pos, 10 * dt);
-		
-
-	
-	
-		scene->Update(dt);
+		camera.Position = MATH::lerp(camera.Position, pos, 10 * dt);	
 		RENDERER::RenderScene(*scene, camera);
 	}
 	
@@ -74,13 +99,7 @@ namespace APP
 			case EventType::KEY : {
 				if(e.keyData.action == PRESS)
 				{
-					if(e.keyData.key == KEY_TAB)
-					{
-						int polygon_mode;
-						glGetIntegerv(GL_POLYGON_MODE, &polygon_mode);	
-						glPolygonMode(GL_FRONT_AND_BACK, polygon_mode == GL_FILL ? GL_LINE : GL_FILL);
-					}
-					else if(e.keyData.key == KEY_F)
+					if(e.keyData.key == KEY_F)
 					{
 						std::cout << int(1/deltatime) << '\n'; 
 					}
@@ -113,8 +132,7 @@ namespace APP
 
 
 	void SandboxApp::Cleanup()
-	{	
-		UnloadTextures();
+	{
 		delete scene;
 		
 		RENDERER::Cleanup();

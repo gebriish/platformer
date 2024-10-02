@@ -12,8 +12,6 @@
 
 using namespace ENGINE;
 
-std::vector<RENDERER::Texture> Textures;
-
 std::vector<std::string> splitString(const std::string& str) {
     std::vector<std::string> result;
     std::istringstream iss(str);
@@ -39,45 +37,49 @@ void loadEntity(std::vector<std::string> arg, CORE::Scene& scene)
 	x = y = 0;
 	std::stringstream(arg[3]) >> x;
 	std::stringstream(arg[4]) >> y;
-	entity->Center = {x, y};
+	entity->Size = {x, y};
 
 	x = y = 0;
 	std::stringstream(arg[5]) >> x;
 	std::stringstream(arg[6]) >> y;
-	entity->Size = {x, y};
-
-	x = y = 0;
-	std::stringstream(arg[7]) >> x;
-	std::stringstream(arg[8]) >> y;
 	entity->UV0 = {x, y};
 
 	x = y = 0;
-	std::stringstream(arg[9])  >> x;
-	std::stringstream(arg[10]) >> y;
+	std::stringstream(arg[7])  >> x;
+	std::stringstream(arg[8]) >> y;
 	entity->UV1 = {x, y};
 
-	entity->Tag = arg[11].c_str();
-	if(arg[12] == "true")
+	entity->Tag = arg[9].c_str();
+	if(arg[10] == "true")
 		entity->Visible = true;
-	else if(arg[12] == "false")
+	else if(arg[10] == "false")
 		entity->Visible = false;
 	else {
-		printf("%s: unidentified\n", arg[12].c_str());
+		printf("%s: unidentified\n", arg[10].c_str());
 	}
 
 	int texture_id;
-	std::stringstream(arg[13]) >> texture_id;
+	std::stringstream(arg[11]) >> texture_id;
 
-	if(texture_id < Textures.size())
-		entity->Texture = Textures.at(texture_id);
+	if(texture_id < scene.GetNumTextures())
+		entity->Texture = scene.GetTexture(texture_id);
 	else
-		entity->Texture = Textures.at(0);
+		entity->Texture = scene.GetTexture(0);
+
+
+	int r, g, b, a;
+	std::stringstream(arg[12]) >> r;
+	std::stringstream(arg[13]) >> g;
+	std::stringstream(arg[14]) >> b;
+	std::stringstream(arg[15]) >> a;
+	entity->Color = {(u8)r, (u8)g, (u8)b, (u8)a};
+
+
 }
 
 void loadTexture(std::vector<std::string> arg, CORE::Scene& scene)
 {
-	RENDERER::Texture t =  RENDERER::LoadTexture(arg[1].c_str());
-	Textures.emplace_back(t);
+	scene.LoadTexture(arg[1].c_str());
 }
 
 void LoadScene(const char* path, CORE::Scene& scene) {
@@ -119,11 +121,4 @@ void LoadScene(const char* path, CORE::Scene& scene) {
 	}
 
     file.close();
-}
-
-
-void UnloadTextures()
-{
-	for(RENDERER::Texture t : Textures)
-		RENDERER::DeleteTexture(t);
 }

@@ -19,9 +19,8 @@ namespace ENGINE::CORE
 		Scene();
 		~Scene();
 
-		void Init();
-		void Update(f32);
 
+		void LoadTexture(const char* path);
 
 		std::shared_ptr<Entity> CreateEntity();
 		std::shared_ptr<Entity> GetEntityWithID(u64);
@@ -30,11 +29,14 @@ namespace ENGINE::CORE
 
 
 		inline u64 GetSize() const { return m_Entities.size(); }
+		inline u64 GetNumTextures() const { return m_Textures.size(); }
+		inline RENDERER::Texture& GetTexture(u16 index) { return m_Textures.at(index); }
 	private:
 		void cleanup();
 
 	private:
 		u64 m_NextEntityId;
+		std::vector<RENDERER::Texture> m_Textures;
 		std::vector<std::shared_ptr<Entity>> m_Entities;
 
 	};
@@ -45,7 +47,6 @@ namespace ENGINE::CORE
 
 	public:
 		MATH::vec2 Position {0};
-		MATH::vec2 Center {0.0f};
 		MATH::vec2 Size {8};
 
 		MATH::vec2 UV0 {.0f}, UV1{1.0f};

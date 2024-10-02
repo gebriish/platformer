@@ -8,4 +8,3 @@ namespace ENGINE::CORE {
 
 std::vector<std::string> splitString(const std::string& str);
 void LoadScene(const char* path, ENGINE::CORE::Scene& scene);
-void UnloadTextures();

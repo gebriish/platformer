@@ -88,7 +88,6 @@ namespace ENGINE::RENDERER
 				}
 
 			glUniform2f(glGetUniformLocation(SpriteShader->GetRendererID(), "uPosition"), e->Position.x, e->Position.y);
-			glUniform2f(glGetUniformLocation(SpriteShader->GetRendererID(), "uOffset"), e->Center.x, e->Center.y);
 			glUniform2f(glGetUniformLocation(SpriteShader->GetRendererID(), "uSize"), e->Size.x, e->Size.y);
 			glUniform4f(glGetUniformLocation(SpriteShader->GetRendererID(), "uColor"), e->Color.GetR(), e->Color.GetG(), e->Color.GetB(), e->Color.GetA());
 

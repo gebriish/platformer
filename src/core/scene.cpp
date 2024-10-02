@@ -26,24 +26,24 @@ namespace ENGINE::CORE {
       cleanup();
     }
 
-	void Scene::Init()
+	void Scene::LoadTexture(const char* path)
 	{
-
+		auto t = RENDERER::LoadTexture(path);
+		m_Textures.emplace_back(t);
 	}
-
-	void Scene::Update(f32 dt)
-	{
-
-	}
-	
 
 	void Scene::cleanup()
 	{
-		for(auto e : m_Entities)
-			if(e->Texture.ID)
-				glDeleteTextures(1, &e->Texture.ID);
+		std::cout << "===================(scene deletion begin)===============\n";
+
+		for(RENDERER::Texture t : m_Textures)
+			RENDERER::DeleteTexture(t);
+
+
 		
+		m_Textures.clear();
 		m_Entities.clear();
+		std::cout << "========================================================\n";
 	}
 
 
