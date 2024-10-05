@@ -9,6 +9,7 @@ namespace APP
 	
 	RENDERER::Texture texture, white;
 	std::shared_ptr<CORE::Entity> e, a;
+	bool grounded = false;
 
 	void SandboxApp::Init()
 	{
@@ -19,7 +20,6 @@ namespace APP
 		DemoScene.MainCamera.Scale = 1/2.0f;
 		e = DemoScene.CreateEntity();
 		e->Size = {16, 32};
-		e->Position = {0, 128};
 		e->TextureRegion.texture = texture;
 
 
@@ -42,13 +42,24 @@ namespace APP
 		if(e->Position.y <= -100 + e->Size.y/2.0)
 		{
 			e->Position.y = -100 + e->Size.y/2.0;
+			grounded = true;
 			v = 0.0f;
+		}
+
+		if(grounded && INPUT::IsKeyPressed(KEY_SPACE)) {
+			v = - 300;
+			grounded = false;
 		}
 
 		if(INPUT::IsKeyPressed(KEY_D))
 			e->Position.x += dt * 300.0f;
 		if(INPUT::IsKeyPressed(KEY_A))
 			e->Position.x -= dt * 300.0f;
+
+		if(INPUT::IsKeyPressed(KEY_F))
+			printf("fps: %ld\n", u64(1/dt));
+
+		DemoScene.MainCamera.Position = MATH::lerp(DemoScene.MainCamera.Position, e->Position, 15 * dt);
 
 		DemoScene.Update(dt);
 		
@@ -71,9 +82,6 @@ namespace APP
 
 			switch (e.keyData.key)
 			{	
-				case KEY_SPACE : 
-					v = - 300;
-				break;
 			}
 
 			}	// key press
@@ -82,12 +90,6 @@ namespace APP
 		}	// case key
 
 		case EventType::CURSOR_MOVE : {
-
-			if(INPUT::IsMouseButtonPressed(1))
-			{
-				DemoScene.MainCamera.Position
-				= MATH::sub(DemoScene.MainCamera.Position, MATH::scale({(f32)e.cursorMoveData.Dx, -(f32)e.cursorMoveData.Dy}, DemoScene.MainCamera.Scale));
-			}
 			break;
 		} // cursor move 
 

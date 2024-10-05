@@ -13,6 +13,11 @@ namespace ENGINE::MATH {
 	{
 		return (vector2) {a.x - b.x , a.y - b.y};
 	}
+	
+	vector2 lerp(const vector2& a, const vector2& b, float t)
+	{
+		return add (a , scale(sub(b, a), t));
+	}
 
 	vector2 scale(const vector2& v, float scalar)
 	{
