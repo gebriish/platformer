@@ -1,92 +1,83 @@
 #include "scene.h"
-#include <algorithm>
 #include <iostream>
-#include <glad/glad.h>
+#include <algorithm>
 
-namespace ENGINE::CORE {
-
-	Entity::Entity(unsigned int id, Scene& s)
-		: m_ID(id), m_Scene(&s)
-	{
-	}
-
-	Entity::~Entity()
-    {
-      	printf("entity(%d) deleted\n", m_ID);
-    }
-
-
+namespace ENGINE::CORE
+{
 	Scene::Scene()
-      : m_NextEntityId(0)
-    {
-    }
+	{
+		m_EntityShader = RENDERER::ShaderProgram::FromGLSLTextFiles("res/sprite.vert", "res/sprite.frag");
+		m_QuadRenderer = new RENDERER::QuadRenderer();
+	}
 
 	Scene::~Scene()
-    {
-      cleanup();
-    }
-
-	void Scene::LoadTexture(const char* path)
 	{
-		auto t = RENDERER::LoadTexture(path);
-		m_Textures.emplace_back(t);
+		delete m_EntityShader;
+		delete m_QuadRenderer;
 	}
 
-	void Scene::cleanup()
+
+	void Scene::Update(f32 dt)
 	{
-		std::cout << "===================(scene deletion begin)===============\n";
-
-		for(RENDERER::Texture t : m_Textures)
-			RENDERER::DeleteTexture(t);
-
-
+		GLuint entity_shader_id = m_EntityShader->GetRendererID();
 		
-		m_Textures.clear();
-		m_Entities.clear();
-		std::cout << "========================================================\n";
-	}
+		glUseProgram(entity_shader_id);
 
+		glUniform2f(glGetUniformLocation(entity_shader_id, "uResolution"), 
+			MainCamera.Width * MainCamera.Scale, MainCamera.Height * MainCamera.Scale	
+		);
+
+		glUniform2f(glGetUniformLocation(entity_shader_id, "uCamera"), 
+			MainCamera.Position.x, MainCamera.Position.y	
+		);
+
+		for(auto& e : m_Entities)
+		{
+			if(!e->FlagCheck(ENTITY_ACTIVE)) continue;
+
+			m_QuadRenderer->Draw(e->Position, e->Size, e->TextureRegion, entity_shader_id);
+		}
+	}
 
 	std::shared_ptr<Entity> Scene::CreateEntity()
-    {
-		auto e = std::make_shared<Entity>(++m_NextEntityId, *this);
-		printf("entity(%d) created\n", e->GetID());
-      	m_Entities.emplace_back(e);
-      	return e;
-    }
+	{
+		auto e = std::make_shared<Entity>(m_NextId++);
+		e->SetFlag(ENTITY_ACTIVE);
+		printf("entity(%ld) created.\n", e->GetID());
+		m_Entities.emplace_back(e);
+		return e;
+	}
 
+	std::shared_ptr<Entity> Scene::GetEntity(u64 id)
+	{
+		if(id >= m_NextId) {
+			std::cout << "entity(" << id << ") doesn't exist\n";
+			return nullptr;
+		}
 
-    std::shared_ptr<Entity> Scene::GetEntityWithID(u64 id)
-    {
-      	if (id > m_NextEntityId)
-      	{
-        	std::cout << "Entity(" << id << ") doesn't exist\n";
-        	return nullptr;
-      	}
-
-      	for (const auto& e : m_Entities)
-		{
-			if(e->GetID() == id)
+		for (const auto& e : m_Entities) {
+			if (e->GetID() == id)
 				return e;
 		}
 
-    	std::cout << "Entity(" << id << ") doesn't exist\n";
-    	return nullptr;
-    }
+		std::cout << "entity(" << id << ") doesn't exist.\n";
+		return nullptr;
+	}
 
-    std::shared_ptr<Entity> Scene::GetEntityWithIndex(u64 index)
-    {
-      if (index >= GetSize())
-      {
-        std::cout << index << " is out of bounds if scene size\n";
-        return nullptr;
-      }
-      return m_Entities[index];
-    }
+	std::shared_ptr<Entity> Scene::GetEntityi(u64 index)
+	{
+		if(index >= GetNumEntities())
+		{
+			std::cout << '(' <<  index << ')' << " out of bounds of entity list.\n";
+			return nullptr;
+		}
+		return m_Entities[index];
+	}
 
-	void Scene::RemoveEntity(u64 id)
-    {
-    	auto it = std::remove_if(m_Entities.begin(), m_Entities.end(),
+
+	void Scene::DestroyEntity(u64 id)
+	{
+		auto it = std::remove_if(m_Entities.begin(), m_Entities.end(),
     		[id](const std::shared_ptr<Entity>& e) {
     		    return e->GetID() == id;
     		});
@@ -96,6 +87,5 @@ namespace ENGINE::CORE {
     	} else {
     	  	std::cout << "Entity(" << id << ") doesn't exist, cannot remove\n";
     	}
-    }
-
+	}
 }

@@ -1,70 +1,41 @@
 #pragma once
-#include <types.h>
-#include <memory>
 #include <vector>
-#include <renderer/color.h>
-#include <renderer/texture.h>
-#include <cstdio>
+#include <memory>
+#include <core/camera.h>
+#include <renderer/quadrenderer.h>
 
-#include <math/vec2.h>
+#include "entity.h"
 
 namespace ENGINE::CORE
 {
 
-	class Entity;
-
-	class Scene
+	class Scene 
 	{
+	public:
+		CORE::Camera2D MainCamera;
+
+
 	public:
 		Scene();
 		~Scene();
 
-
-		void LoadTexture(const char* path);
+		void Update(f32);
 
 		std::shared_ptr<Entity> CreateEntity();
-		std::shared_ptr<Entity> GetEntityWithID(u64);
-		std::shared_ptr<Entity> GetEntityWithIndex(u64);
-		void RemoveEntity(u64);
+		std::shared_ptr<Entity> GetEntity(u64 id);
+		std::shared_ptr<Entity> GetEntityi(u64 index);
 
-
-		inline u64 GetSize() const { return m_Entities.size(); }
-		inline u64 GetNumTextures() const { return m_Textures.size(); }
-		inline RENDERER::Texture& GetTexture(u16 index) { return m_Textures.at(index); }
-	private:
-		void cleanup();
+		void DestroyEntity(u64 id);
+		
+		inline size_t GetNumEntities() const { return m_Entities.size(); }
 
 	private:
-		u64 m_NextEntityId;
-		std::vector<RENDERER::Texture> m_Textures;
+		u64 m_NextId = 0;
 		std::vector<std::shared_ptr<Entity>> m_Entities;
 
+		RENDERER::QuadRenderer* m_QuadRenderer;
+		RENDERER::ShaderProgram* m_EntityShader;
 	};
 
 
-	class Entity 
-	{
-
-	public:
-		MATH::vec2 Position {0};
-		MATH::vec2 Size {8};
-
-		MATH::vec2 UV0 {.0f}, UV1{1.0f};
-
-		const char* Tag = "";
-		bool Visible = true;
-		RENDERER::Color Color{255};
-		RENDERER::Texture Texture;
-
-	public:
-		Entity(unsigned int id, Scene& s);
-		~Entity();
-
-		inline unsigned int GetID() const { return m_ID; }
-		inline Scene& GetScene() { return *m_Scene; }
-
-	private:
-		const unsigned int m_ID;
-		Scene *m_Scene;
-	};
 }

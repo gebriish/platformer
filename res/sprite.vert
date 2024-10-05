@@ -1,23 +1,25 @@
 #version 410 core
-
 layout (location = 0) in vec2 aPos;
 
-out vec2 vUV;
+uniform vec2 uPosition;
+uniform vec2 uSize;
+
+uniform vec2 uUVMin;
+uniform vec2 uUVMax;
 
 uniform vec2 uResolution;
 uniform vec2 uCamera;
-uniform vec2 uSize;
-uniform vec2 uPosition;
 
-uniform vec2 uUV0;
-uniform vec2 uUV1;
 
+
+out vec2 vUV;
 
 void main()
 {
-	vUV  = (aPos + 0.5f) * (uUV1 - uUV0) + uUV0;
+	vUV = (aPos + 0.5f) * (uUVMax - uUVMin) + uUVMin;
 
+	vec2 position = aPos * uSize + uPosition - uCamera;
+	position = position * 2.0 / uResolution;
 	
-	vec2 p = (aPos * uSize) + uPosition - uCamera;
-	gl_Position = vec4(p * 2 / uResolution, 0.0, 1.0);
+	gl_Position = vec4(position, 0.0, 1.0);
 }

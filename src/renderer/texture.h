@@ -12,6 +12,7 @@ namespace ENGINE::RENDERER
 		u16 Height = 0;
 	};
 
+	
 	Texture LoadTexture(const char* path);
 	void DeleteTexture(const Texture& texture);
 }

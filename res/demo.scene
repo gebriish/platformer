@@ -1,7 +1,0 @@
-# entity xpos ypos xsize ysize uv0x uv0y uv1x uv1y tag visible texture_index r g b a
-# texture path
-
-texture res/Texture/white.png
-texture res/Texture/tile.png
-
-entity 0 0 128 128 0.0 0.0 1.0 1.0 TAG true 1 255 255 255 255

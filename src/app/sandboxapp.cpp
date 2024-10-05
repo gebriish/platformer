@@ -1,93 +1,63 @@
 #include "sandboxapp.h"
-#include <core/scene.h>
 #include <core/input.h>
-#include <renderer/texture.h>
-#include <renderer/render.h>
-#include "sceneloader.h"
-
-#include <cmath>
+#include <renderer/quadrenderer.h>
 
 using namespace ENGINE;
 
 namespace APP
 {
-
-	CORE::Scene* scene;
-	CORE::Camera camera;
-
-	float t = 0.0f;
-	float deltatime = 0.0f;
-
-	MATH::vec2 pos{0.0f, 0.0f};
+	
+	RENDERER::Texture texture, white;
+	std::shared_ptr<CORE::Entity> e, a;
 
 	void SandboxApp::Init()
 	{
-		RENDERER::Init();
 
-		camera.Scale = 0.5f;
-		camera.ClearColor = {0x18};
+		texture = RENDERER::LoadTexture("res/Texture/white.png");
+		white = RENDERER::LoadTexture("res/Texture/white.png");
 
-		scene = new CORE::Scene;
-		LoadScene("res/demo.scene", *scene);
+		DemoScene.MainCamera.Scale = 1/2.0f;
+		e = DemoScene.CreateEntity();
+		e->Size = {16, 32};
+		e->Position = {0, 128};
+		e->TextureRegion.texture = texture;
 
-		auto e = scene->CreateEntity();
-		e->Texture = scene->GetTexture(1);
-		e->Size = {8};
-		e->UV0 = {0.0f, 0.375f};
-		e->UV1 = e->UV0 + MATH::vec2{1/16.0f, 1/16.0f};
-		e->Position = {20, -12};
+
+		a = DemoScene.CreateEntity();
+		a->Size = {400, 16};
+		a->Position = {0, - 100 - a->Size.y/2.0f};
+		a->TextureRegion.texture = white;
+		a->TextureRegion.color = {117, 204, 63, 255};
 	}
 
+	f32 v = 0;
 
-	int sprite_index = 0;
-	float x = 0;
 	void SandboxApp::Update(f32 dt)
 	{
-		deltatime = dt;
-		t += dt;
-		x += dt;
+        glClear(GL_COLOR_BUFFER_BIT);
 
-		auto e = scene->GetEntityWithIndex(1);	
+		v += dt * 1000.0f;
+		e->Position.y -= v * dt;
 
-
-		if(t > 1/8.0f)
+		if(e->Position.y <= -100 + e->Size.y/2.0)
 		{
-			
-			if(sprite_index < 9) {
-				e->UV0.x += 1/16.0f;
-				e->UV1.x += 1/16.0f;
-			}			
-			else{
-				e->UV0 = {0.0f, 0.375f};
-				e->UV1 = e->UV0 + MATH::vec2{1/16.0f, 1/16.0f};
-				sprite_index = 0;
-			}
-			sprite_index++;
-			t = 0.0f;
+			e->Position.y = -100 + e->Size.y/2.0;
+			v = 0.0f;
 		}
 
-
-		if(INPUT::IsKeyPressed(KEY_E))
-			camera.Scale -= dt;	
-		if(INPUT::IsKeyPressed(KEY_Q))
-			camera.Scale += dt;
-
-		camera.Scale = std::max(camera.Scale, 0.0f);
-
 		if(INPUT::IsKeyPressed(KEY_D))
-			pos.x += dt * 256;	
+			e->Position.x += dt * 300.0f;
 		if(INPUT::IsKeyPressed(KEY_A))
-			pos.x -= dt * 256;
-		if(INPUT::IsKeyPressed(KEY_W))
-			pos.y += dt * 256;	
-		if(INPUT::IsKeyPressed(KEY_S))
-			pos.y -= dt * 256;
+			e->Position.x -= dt * 300.0f;
 
-		camera.Position = MATH::lerp(camera.Position, pos, 10 * dt);	
-		RENDERER::RenderScene(*scene, camera);
+		DemoScene.Update(dt);
+		
 	}
-	
 
+	void SandboxApp::Cleanup()
+	{
+		RENDERER::DeleteTexture(texture);
+	}
 
 	void SandboxApp::OnEvent(ENGINE::CORE::Event& e)
 	{
@@ -95,47 +65,39 @@ namespace APP
 
 		switch (e.type)
 		{
+		case EventType::KEY : {
+			if(e.keyData.action == PRESS)
+			{
 
-			case EventType::KEY : {
-				if(e.keyData.action == PRESS)
-				{
-					if(e.keyData.key == KEY_F)
-					{
-						std::cout << int(1/deltatime) << '\n'; 
-					}
-					else if(e.keyData.key == KEY_G)
-					{
-						scene->RemoveEntity(1);
-					}
-				}
-
-
+			switch (e.keyData.key)
+			{	
+				case KEY_SPACE : 
+					v = - 300;
 				break;
 			}
 
-			case EventType::CURSOR_MOVE : {
-				if(INPUT::IsKeyPressed(KEY_SPACE))
-				{
-					pos.x -= e.cursorMoveData.Dx * camera.Scale;
-					pos.y += e.cursorMoveData.Dy * camera.Scale;
-				}
-				break;
-			}
+			}	// key press
 
-			case EventType::RESIZE : {
-				camera.Resize(e.resizeData.width, e.resizeData.height);
-				glViewport(0, 0, camera.GetResolution(false).x, camera.GetResolution(false).y);
-				break;
+			break;
+		}	// case key
+
+		case EventType::CURSOR_MOVE : {
+
+			if(INPUT::IsMouseButtonPressed(1))
+			{
+				DemoScene.MainCamera.Position
+				= MATH::sub(DemoScene.MainCamera.Position, MATH::scale({(f32)e.cursorMoveData.Dx, -(f32)e.cursorMoveData.Dy}, DemoScene.MainCamera.Scale));
 			}
+			break;
+		} // cursor move 
+
+
+		case EventType::RESIZE : {
+			glViewport(0, 0, e.resizeData.width, e.resizeData.height);
+			DemoScene.MainCamera.Width  = e.resizeData.width;
+			DemoScene.MainCamera.Height = e.resizeData.height;
+			break;
+		}
 		}
 	}
-
-
-	void SandboxApp::Cleanup()
-	{
-		delete scene;
-		
-		RENDERER::Cleanup();
-	}
-
 }

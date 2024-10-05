@@ -3,7 +3,7 @@
 
 namespace ENGINE::CORE
 {
-    enum class EventType {
+    enum EventType {
         RESIZE = 0,
         CURSOR_MOVE = 1,
         MOUSE_BUTTON = 2,
