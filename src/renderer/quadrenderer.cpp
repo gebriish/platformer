@@ -76,9 +76,14 @@ namespace ENGINE::RENDERER
 
 		glUniform4f(glGetUniformLocation(program_id, "uColor"), region.color.GetR(), region.color.GetG(), region.color.GetB(), region.color.GetA());
 
-		glUniform2f(glGetUniformLocation(program_id, "uUVmin"), region.uvMin.x, region.uvMin.y);
-		glUniform2f(glGetUniformLocation(program_id, "uUVmax"), region.uvMax.x, region.uvMax.y);
-
+		if(!region.xFlip) {
+			glUniform2f(glGetUniformLocation(program_id, "uUVmin"), region.uvMin.x, region.uvMin.y);
+			glUniform2f(glGetUniformLocation(program_id, "uUVmax"), region.uvMax.x, region.uvMax.y);
+		}
+		else {
+			glUniform2f(glGetUniformLocation(program_id, "uUVmin"), region.uvMax.x, region.uvMin.y);
+			glUniform2f(glGetUniformLocation(program_id, "uUVmax"), region.uvMin.x, region.uvMax.y);	
+		}
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}

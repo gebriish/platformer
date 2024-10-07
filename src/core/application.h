@@ -22,6 +22,6 @@ namespace ENGINE::CORE
 		virtual void OnEvent(Event& e) = 0;
 		
 	protected:
-		Window MainWindow{800, 500, "Platformer"};
+		Window MainWindow{512, 512, "Platformer"};
 	};
 }
