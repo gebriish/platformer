@@ -1,38 +1,56 @@
 #include "sandboxapp.h"
 #include <core/input.h>
 
+#include <cmath>
 #include <renderer/quadrenderer.h>
+#include <renderer/linerenderer.h>
 
 using namespace ENGINE;
 
 namespace APP
 {
 	CORE::Camera2D main_camera;
-
 	MATH::vector2 position (0.0f, 0.0f);
+
+	RENDERER::LineRenderer *lr;
+	RENDERER::QuadRenderer *qr;
 
 	void SandboxApp::Init()
 	{
+		qr = new RENDERER::QuadRenderer;
+		lr = new RENDERER::LineRenderer;
 	}
 
 	void SandboxApp::Update(f32 dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		if(INPUT::IsKeyPressed(KEY_D))
-			position += MATH::vector2(300, 0) * dt;
-		if(INPUT::IsKeyPressed(KEY_A))
-			position -= MATH::vector2(300, 0) * dt;
-		if(INPUT::IsKeyPressed(KEY_W))
-			position += MATH::vector2(0, 300) * dt;
-		if(INPUT::IsKeyPressed(KEY_S))
-			position -= MATH::vector2(0, 300) * dt;
+		if(INPUT::IsKeyPressed(KEY_F))
+			printf("%ld\n", u64(1/dt));
 
-		main_camera.Position = MATH::lerp(main_camera.Position, position, 13 * dt);
+		auto[x, y] = INPUT::GetCursorPosition();
+		MATH::vector2 pos = main_camera.ScreenToWorldPosition(x, y);
+
+		qr->Begin(main_camera);
+		qr->Draw(pos, {32,-32});
+		qr->End();
+
+		lr->Begin(main_camera);
+
+		for(int i=0; i<12; i++)
+		{
+			f32 theta = i * 2 * 3.1415 / 12;
+			MATH::vector2 p ( (f32) cos(theta), (f32) sin(theta));
+			lr->Draw({0, 0}, p *  128, RENDERER::Color(0, 255, 0));
+		}
+
+		lr->End();
 	}
 
 	void SandboxApp::Cleanup()
 	{
+		delete lr;
+		delete qr;
 	}
 
 	void SandboxApp::OnEvent(ENGINE::CORE::Event& e)

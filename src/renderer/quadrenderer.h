@@ -15,9 +15,9 @@ namespace ENGINE::RENDERER
 		~QuadRenderer();
 
 		void Begin(const CORE::Camera2D& camera);
-		void Draw(MATH::vector2 position, MATH::vector2 size);
-		void Draw(MATH::vector2 position, MATH::vector2 size, const Color& color);
-		void Draw(MATH::vector2 position, MATH::vector2 size, const TextureRegion& region);
+		void Draw(const MATH::vector2& position, const MATH::vector2& size);
+		void Draw(const MATH::vector2& position, const MATH::vector2& size, const Color& color);
+		void Draw(const MATH::vector2& position, const MATH::vector2& size, const TextureRegion& region);
 		void End();
 
 	private:

@@ -5,7 +5,7 @@ namespace ENGINE::RENDERER
 	QuadRenderer::QuadRenderer()
 	{
 		m_Program = ShaderProgram::FromGLSLTextFiles("res/quad.vert", "res/quad.frag");
-		glUniform1i(glGetUniformLocation(m_Program->GetRendererID(), "uSprite"), 0);
+		glUniform1i(glGetUniformLocation(m_Program->GetRendererID(), "uTexture"), 0);
 
 		m_WhiteTexture = load_texture("res/Texture/white.png");
 
@@ -66,7 +66,7 @@ namespace ENGINE::RENDERER
 		glEnableVertexAttribArray(0);
 	}
 
-	void QuadRenderer::Draw(MATH::vector2 position, MATH::vector2 size, const TextureRegion& region)
+	void QuadRenderer::Draw(const MATH::vector2& position, const MATH::vector2& size, const TextureRegion& region)
 	{
 		bind_texture(region.texture, 0);
 		GLuint program_id = m_Program->GetRendererID();
@@ -83,7 +83,7 @@ namespace ENGINE::RENDERER
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 
-	void QuadRenderer::Draw(MATH::vector2 position, MATH::vector2 size)
+	void QuadRenderer::Draw(const MATH::vector2& position, const MATH::vector2& size)
 	{
 		TextureRegion region;
 		region.color   = Color(0xff);
@@ -92,7 +92,7 @@ namespace ENGINE::RENDERER
 		this->Draw(position, size, region);
 	}
 
-	void QuadRenderer::Draw(MATH::vector2 position, MATH::vector2 size, const Color& color)
+	void QuadRenderer::Draw(const MATH::vector2& position, const MATH::vector2& size, const Color& color)
 	{
 		TextureRegion region;
 		region.color   = color;

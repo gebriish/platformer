@@ -13,8 +13,6 @@ struct Sprite
 	vec2 size;
 };
 
-
-
 uniform vec2 uUVmin;
 uniform vec2 uUVmax;
 
