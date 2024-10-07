@@ -55,7 +55,7 @@ namespace ENGINE::CORE
 		glfwSetFramebufferSizeCallback(window.GetContext(), [](GLFWwindow* event_window, int width, int height)
 		{	
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(event_window);
-			data.width = width;
+			data.width  = width;
 			data.height = height;
 
 			Event e = Event::CreateResizeEvent(width, height);
@@ -98,12 +98,6 @@ namespace ENGINE::CORE
 			data.EventCallback(e);
 		});
 
-		/*
-		glfwSetWindowCloseCallback(window.GetContext(), [](GLFWwindow* event_window){
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			
-		});
-		*/
 
 		Window::s_Instance = &window;
 

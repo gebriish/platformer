@@ -8,9 +8,7 @@
 
 namespace ENGINE::RENDERER
 {
-	
-
-	Texture LoadTexture(const char* path)
+	Texture load_texture(const char* path)
 	{
 		Texture t;
 
@@ -32,6 +30,7 @@ namespace ENGINE::RENDERER
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
+			std::cout << "Texture(" << t.ID << ") loaded.\n";
 		}
 		else
 		{
@@ -39,15 +38,23 @@ namespace ENGINE::RENDERER
 		}
 		stbi_image_free(data);
 
+
+
 		t.Width = width;
 		t.Height = height;
 
 		return t;
 	}
 
-	void DeleteTexture(const Texture& texture)
+	void bind_texture(const Texture& texture, u64 slot)
 	{
-		printf("Texture(%d) deleted\n", texture.ID);
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, texture.ID);
+	}
+
+	void delete_texture(const Texture& texture)
+	{
+		printf("Texture(%d) unloaded.\n", texture.ID);
 		glDeleteTextures(1, &texture.ID);
 	}
 

@@ -1,8 +1,9 @@
 #pragma once
-#include <math/vector2.h>
-#include <renderer/color.h>
+#include <core/camera.h>
 #include <renderer/shaderprogram.h>
 #include <renderer/texturespec.h>
+#include <renderer/color.h>
+#include <math/vector2.h>
 
 namespace ENGINE::RENDERER
 {
@@ -12,25 +13,21 @@ namespace ENGINE::RENDERER
 	public:
 		QuadRenderer();
 		~QuadRenderer();
-	
-		void Draw
-		(
-			const MATH::vector2& position,
-			const MATH::vector2& size,
-			const RENDERER::TextureRegion& texture_region,
-			const GLuint program
-		);
+
+		void Begin(const CORE::Camera2D& camera);
+		void Draw(MATH::vector2 position, MATH::vector2 size);
+		void Draw(MATH::vector2 position, MATH::vector2 size, const Color& color);
+		void Draw(MATH::vector2 position, MATH::vector2 size, const TextureRegion& region);
+		void End();
 
 	private:
+		unsigned int VAO, VBO, EBO;
+		ShaderProgram* m_Program;
+		Texture m_WhiteTexture;
 
-		void init();
-	
-	private:
-
-		struct {
-			unsigned int VAO, VBO, EBO;
-		} m_QuadMesh;
-	
 	};
+	
+
+	
 
 }
