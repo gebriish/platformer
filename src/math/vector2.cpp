@@ -19,4 +19,12 @@ namespace ENGINE::MATH {
 		return (f32) sqrt(dot(v,v));
 	}
 
+	vector2 normalize(const vector2& v)
+	{
+		if(v.x == 0 && v.y == 0) { return MATH::vector2{0.0f, 0.0f}; }
+
+		f32 l = length(v);
+		return v / l;
+	}
+
 }

@@ -57,8 +57,9 @@ namespace ENGINE::MATH
 		}
 	};
 
+
 	vector2 lerp(const vector2& a, const vector2& b, float t);
 	f32 dot(const vector2& a, const vector2& b);
 	f32 length(const vector2& v) ;
-
+	vector2 normalize(const vector2& v);
 }
