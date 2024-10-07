@@ -78,6 +78,8 @@ namespace APP
 				t = 0.0f;
 			}
 
+		main_camera.Position = MATH::lerp(main_camera.Position, player_position + MATH::vector2(60, 40), 10 * dt);
+
 		qr->Begin(main_camera);
 		qr->Draw({0, 0}, {256, 256}, region2);
 		qr->Draw(player_position, {120, 80 }, region);
@@ -86,12 +88,21 @@ namespace APP
 		lr->Begin(main_camera);
 		lr->Draw({0.0f, 0.0f}, {800, 0.0f}, RENDERER::Color(255, 0, 0));
 		lr->Draw({0.0f, 0.0f}, {0.0f, 800}, RENDERER::Color(0, 255, 0));
+		
+		MATH::vector2 center = player_position + MATH::vector2(60, 40);
+
+		lr->Draw(center - MATH::vector2(15, 40), center - MATH::vector2(15, 0), RENDERER::Color(0, 0xff, 0));
+		lr->Draw(center - MATH::vector2(15, 0), center + MATH::vector2(15, 0), RENDERER::Color(0, 0xff, 0));
+		lr->Draw(center + MATH::vector2(15, 0), center + MATH::vector2(15, -40), RENDERER::Color(0, 0xff, 0));
+		lr->Draw(center - MATH::vector2(15, 40), center + MATH::vector2(15, -40), RENDERER::Color(0, 0xff, 0));
+		
 		lr->End();
 	}
 
 	void SandboxApp::Cleanup()
 	{
-		RENDERER::delete_texture(region.texture);
+		RENDERER::delete_texture(idle);
+		RENDERER::delete_texture(run);
 		RENDERER::delete_texture(region2.texture);
 
 		delete lr;
@@ -109,13 +120,6 @@ namespace APP
 				glViewport(0, 0, main_camera.Width, main_camera.Height);
 				break;
 			}
-
-			case EventType::CURSOR_MOVE : {
-				if(INPUT::IsKeyPressed(KEY_SPACE))
-					main_camera.Position -= MATH::vector2{(f32) e.cursorMoveData.Dx, -(f32)e.cursorMoveData.Dy} * main_camera.Scale;
-				break;
-			}
-
 
 			case EventType::KEY : {
 
