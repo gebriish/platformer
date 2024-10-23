@@ -3,8 +3,7 @@
 
 int main()
 {
-    Application app("~", 800, 500, WINDOWFLAG_NONE);
+    Application app("~", 640, 480, WINDOWFLAG_RESIZABLE);
     app.addLayer(std::make_shared<GameLayer>());
     app.run();
 }
-

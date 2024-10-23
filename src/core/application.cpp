@@ -30,14 +30,10 @@ void Application::run()
 
 	while(!window_should_close(m_Window))
 	{
-
-		
 		float end_time = (float) glfwGetTime();
 		float deltaTime = end_time - begin_time;
 		begin_time = end_time;
-
-		clear_viewport(color_from_hexcode("232323"));
-
+		
 		this->onUpdate(deltaTime);
 
 		swap_buffer(m_Window);

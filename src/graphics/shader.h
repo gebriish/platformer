@@ -1,5 +1,10 @@
 #pragma once
 
+enum class ShaderType
+{
+	
+};
+
 typedef struct {
 	unsigned int ID;
 } Shader;

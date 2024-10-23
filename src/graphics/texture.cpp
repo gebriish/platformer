@@ -6,7 +6,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-Texture load_texture(const char* path,TextureFiltering filtering)
+
+Texture load_texture_from_file(const char* path,TextureFiltering filtering)
 {
 	unsigned int id;
 
@@ -53,3 +54,4 @@ void delete_texture(const Texture& texture)
 	printf("Texture(%d) unloaded.\n", texture.ID);
 	glDeleteTextures(1, &texture.ID);
 }
+
