@@ -20,5 +20,5 @@ std::pair<float,float> Input::getCursorPosition()
 	double x, y;
 	auto& window = Application::Get().window();
 	glfwGetCursorPos(window.glfwWindow, &x, &y);
-	return std::pair<float,float>{(float)x, (float(y))};
+	return std::pair<float,float>{(float)x, window.height - (float(y))};
 }

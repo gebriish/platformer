@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 Application* Application::s_Instance = nullptr;
-
+float deltaTime = 0.0;
 
 Application::Application(const char* title, uint16_t width, uint16_t height, int window_flags)
 {
@@ -31,7 +31,7 @@ void Application::run()
 	while(!window_should_close(m_Window))
 	{
 		float end_time = (float) glfwGetTime();
-		float deltaTime = end_time - begin_time;
+		deltaTime = end_time - begin_time;
 		begin_time = end_time;
 		
 		this->onUpdate(deltaTime);
@@ -39,6 +39,12 @@ void Application::run()
 		swap_buffer(m_Window);
 	}
 }
+
+uint64_t Application::framerate() const
+{
+	return uint64_t(1/deltaTime);
+}
+
 
 void Application::onEvent(Event& e)
 {

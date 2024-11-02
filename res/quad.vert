@@ -10,13 +10,11 @@ out vec2 vPosition;
 
 void main()
 {
-	vec2 position = aPos * uSize + uPosition * vec2(1,-1);
-	vPosition = position * vec2(1,-1);
-
+	vec2 position = aPos * uSize + uPosition;
+	vPosition = position;
 
 	position /= uViewport;
-	position = position * 2.0f - vec2(1,-1);
-
+	position = position * 2.0f - 1.0;
 
 	gl_Position = vec4(position, 0.0f, 1.0f);
 }

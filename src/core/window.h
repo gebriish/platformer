@@ -34,10 +34,12 @@ struct Window
 void set_event_callback(Window &window,const EventCallbackFn& callback);
 
 void initialize_window(Window& window, int flags);
-bool window_should_close(const Window& window);
+void close_window(Window& window);
+void destroy_window(Window& window);
+
 void clear_viewport(float, float, float, float);
 void clear_viewport(const Color& color);
-void set_render_region(Window& window, int x, int y);
+void set_render_region(int x, int y, int width, int height);
 void swap_buffer(const Window& window);
-void destroy_window(Window& window);
-void close_window(Window& window);
+
+bool window_should_close(const Window& window);

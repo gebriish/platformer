@@ -13,11 +13,11 @@ public:
 
 	void run();
 
+	uint64_t framerate() const;
+
 	inline void addLayer(std::shared_ptr<Layer> layer) { m_LayerManager.addLayer(layer); }
 	inline void removeLayer(std::shared_ptr<Layer> layer) { m_LayerManager.removeLayer(layer); }
-
 	inline static Application& Get() { return *s_Instance; }
-
 	inline Window& window() { return m_Window; }
 	
 

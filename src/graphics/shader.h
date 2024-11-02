@@ -1,13 +1,8 @@
 #pragma once
 
-enum class ShaderType
-{
-	
-};
-
-typedef struct {
+struct Shader {
 	unsigned int ID;
-} Shader;
+};
 
 void load_glsl_shader(const char* vertexPath, const char* fragmentPath, Shader& program);
 void use_shader_program(const Shader& program);

@@ -63,11 +63,12 @@ void initialize_window(Window& window, int flag)
 	glfwSetCursorPosCallback(window.glfwWindow, [](GLFWwindow* event_window, double xpos, double ypos)
 	{
 		Window& window = *(Window*)glfwGetWindowUserPointer(event_window);
-
-		Event e = Event::CreateCursorMoveEvent(xpos, ypos, xpos - window.cursor.x, ypos - window.cursor.y);
+		
+		Event e = Event::CreateCursorMoveEvent(xpos, window.height - ypos, xpos - window.cursor.x, window.height - ypos - window.cursor.y);
 		window.EventCallback(e);
+
 		window.cursor.x = xpos;
-		window.cursor.y = ypos;
+		window.cursor.y = window.height - ypos;
 	});
 
 	glfwSetMouseButtonCallback(window.glfwWindow, [](GLFWwindow* event_window, int button, int action, int mods)
@@ -119,7 +120,7 @@ void destroy_window(Window& window)
 void clear_viewport(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void clear_viewport(const Color& color)
@@ -127,10 +128,8 @@ void clear_viewport(const Color& color)
 	clear_viewport(color.r/255.0, color.g/255.0, color.b/255.0, color.a/255.0);
 }
 
-void set_render_region(Window& window, int x, int y) {
-	window.width = x;
-	window.height = y;
-	glViewport(0, 0, x, y);
+void set_render_region(int x, int y, int width, int height) {
+	glViewport(x, y, x + width, y + height);
 }
 
 void set_event_callback(Window &window,const EventCallbackFn& callback)

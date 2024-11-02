@@ -26,5 +26,8 @@ float length(const vec2& vec)
 
 vec2 normalize(const vec2& vec)
 {
+	if(vec.x == 0 && vec.y == 0)
+		return vec2{0};
+	
 	return vec / length(vec);
 }
