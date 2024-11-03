@@ -28,3 +28,8 @@ vec4 normalize(const vec4& vec)
 {
 	return vec / length(vec);
 }
+
+vec4 lerp(const vec4& a, const vec4& b, float t)
+{
+	return a + (b - a) * t;
+}

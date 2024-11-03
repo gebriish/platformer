@@ -22,7 +22,7 @@ void main()
 	vTexCoords = aTexCoord;
 
 	position -= uCamera.position;
-	position /= uCamera.size/2.0;
+	position /= uCamera.size * 0.5;
 
 	gl_Position = vec4(position, 0.0, 1.0);
 }

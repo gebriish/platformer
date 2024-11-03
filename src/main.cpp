@@ -1,9 +1,9 @@
 #include <core/application.h>
-#include <game/game_layer.h>
+#include <game/editor_layer.h>
 
 int main()
 {
-    Application app("~", 800, 500, WINDOWFLAG_RESIZABLE | WINDOWFLAG_VSYNC);
-    app.addLayer(std::make_shared<GameLayer>());
+    Application app("~", 640, 480, WINDOWFLAG_UNDECORATED);
+    app.addLayer(std::make_shared<EditorLayer>());
     app.run();
 }

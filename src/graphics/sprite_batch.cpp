@@ -3,8 +3,9 @@
 #include <glad/glad.h>
 
 SpriteBatch::SpriteBatch(uint32_t size)
-	: BATCH_SIZE(size)
 {
+	BATCH_SIZE = size;
+	
 	m_VertexArray = new float[BATCH_SIZE * 4 * sizeof(SpriteVertex)/sizeof(float)];
 
 	glGenVertexArrays(1, &VAO);
@@ -14,7 +15,7 @@ SpriteBatch::SpriteBatch(uint32_t size)
 	glBindVertexArray(VAO);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, BATCH_SIZE * 4 * sizeof(SpriteVertex)/sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, BATCH_SIZE * 4 * sizeof(SpriteVertex), nullptr, GL_DYNAMIC_DRAW);
 
 	unsigned int indices[BATCH_SIZE * 6];
 

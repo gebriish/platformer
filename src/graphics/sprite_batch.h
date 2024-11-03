@@ -6,8 +6,6 @@
 
 class SpriteBatch
 {
-public:
-	const uint32_t BATCH_SIZE;
 
 public:
 	SpriteBatch(uint32_t size);
@@ -24,5 +22,7 @@ private:
 
 	unsigned int VAO, VBO, EBO;
 	float *m_VertexArray; 
+
+	uint32_t BATCH_SIZE;
 
 };	

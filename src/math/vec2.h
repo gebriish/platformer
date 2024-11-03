@@ -73,3 +73,4 @@ struct vec2 {
 float dot(const vec2& a, const vec2& b);
 float length(const vec2& vec);
 vec2 normalize(const vec2& vec);
+vec2 lerp(const vec2& a, const vec2& b, float t);

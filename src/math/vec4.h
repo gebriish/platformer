@@ -11,6 +11,8 @@ struct vec4 {
         if (this != &other) {
             x = other.x;
             y = other.y;
+            z = other.z;
+            w = other.z;
         }
         return *this;
     }
@@ -81,3 +83,4 @@ struct vec4 {
 float dot(const vec4& a, const vec4& b);
 float length(const vec4& vec);
 vec4 normalize(const vec4& vec);
+vec4 lerp(const vec4& a, const vec4& b, float t);

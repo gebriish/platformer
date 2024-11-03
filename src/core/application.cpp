@@ -2,6 +2,8 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <thread>
+#include <chrono>
 
 Application* Application::s_Instance = nullptr;
 float deltaTime = 0.0;
@@ -29,7 +31,7 @@ void Application::run()
 	float begin_time = (float)glfwGetTime();
 
 	while(!window_should_close(m_Window))
-	{
+	{		
 		float end_time = (float) glfwGetTime();
 		deltaTime = end_time - begin_time;
 		begin_time = end_time;

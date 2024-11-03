@@ -136,6 +136,13 @@ enum KeyCode
 	KEY_LAST 			  = KEY_MENU,
 };
 
+enum class CursorMode
+{
+	NORMAL,
+	HIDDEN,
+	DISABLED,
+	CAPTURED,
+};
 
 class Input
 {
@@ -143,4 +150,5 @@ public:
 	static bool isKeyPressed(int keycode);
 	static bool isMouseButtonPressed(int button);
 	static std::pair<float,float> getCursorPosition();
+	static void setCursorMode(CursorMode mode);
 };
