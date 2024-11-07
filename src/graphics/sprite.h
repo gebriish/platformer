@@ -14,7 +14,9 @@ struct Sprite
 {
 	vec2 position{0.0};
 	vec2 size{1.0};
-	Color color = color_from_hexcode("ffffff");
+	vec2 offset{0.0, 0.0};
+	
+	Color color = {0xff, 0xff, 0xff, 0xff};
 	vec2 texture_coord_min{0.0};
 	vec2 texture_coord_max{1.0};
 };

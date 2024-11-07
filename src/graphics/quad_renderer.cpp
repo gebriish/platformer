@@ -89,7 +89,7 @@ void QuadRenderer::draw(int x, int y, int width, int height, const Color& color)
 }
 
 void QuadRenderer::draw(int x, int y, int width, int height) {
-	this->draw(x, y, width, height, color_from_hexcode("ffffff"));
+	this->draw(x, y, width, height, {0xff, 0xff, 0xff, 0xff});
 }
 
 void QuadRenderer::resizeViewport(uint16_t x, uint16_t y)

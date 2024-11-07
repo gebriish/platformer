@@ -3,7 +3,7 @@
 
 int main()
 {
-    Application app("~", 640, 480, WINDOWFLAG_UNDECORATED);
+    Application app("~", 1024, 640, WINDOWFLAG_VSYNC);
     app.addLayer(std::make_shared<EditorLayer>());
     app.run();
 }

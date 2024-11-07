@@ -1,4 +1,5 @@
 #pragma once
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 enum ActionCode
@@ -6,6 +7,16 @@ enum ActionCode
 	RELEASE = 0,
 	PRESS 	= 1,
 	REPEAT 	= 2,
+};
+
+enum ActionMods
+{
+	MODS_SHIFT 		=  0x0001,
+	MODS_CONTROL 	= 0x0002,
+	MODS_ALT 		= 0x0004,
+	MODS_SUPER 		= 0x0008,
+	MODS_CAPS_LOCK 	= 0x0010,
+	MODS_NUM_LOCK 	= 0x0020
 };
 
 enum KeyCode
@@ -143,6 +154,7 @@ enum class CursorMode
 	DISABLED,
 	CAPTURED,
 };
+
 
 class Input
 {

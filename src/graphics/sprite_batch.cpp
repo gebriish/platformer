@@ -47,6 +47,7 @@ SpriteBatch::SpriteBatch(uint32_t size)
 
 SpriteBatch::~SpriteBatch()
 {	
+
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
@@ -67,7 +68,7 @@ bool SpriteBatch::addSprite(const Sprite& sprite)
 		return false;
 	}
 
-	vec2 pos(0.0);
+	vec2 pos(-0.5f);
 	unsigned int vertex_size = sizeof(SpriteVertex)/sizeof(float);
 	unsigned int array_top = m_StackTop * 4 * vertex_size;
 
@@ -78,18 +79,18 @@ bool SpriteBatch::addSprite(const Sprite& sprite)
 		switch (i)
 		{
 			case 1:
-				pos.x = 1.0;
+				pos.x = 0.5f;
 				break;
 			case 2:
-				pos.y = 1.0;
+				pos.y = 0.5f;
 				break;
 			case 3:
-				pos.x = 0.0;
+				pos.x = -0.5f;
 				break;
 		}
 
-		m_VertexArray[array_top + i * vertex_size + 0] = pos.x * sprite.size.x + sprite.position.x;
-		m_VertexArray[array_top + i * vertex_size + 1] = pos.y * sprite.size.y + sprite.position.y;
+		m_VertexArray[array_top + i * vertex_size + 0] = pos.x * sprite.size.x + sprite.position.x - sprite.offset.x;
+		m_VertexArray[array_top + i * vertex_size + 1] = pos.y * sprite.size.y + sprite.position.y - sprite.offset.y;
 
 		m_VertexArray[array_top + i * vertex_size + 2] = sprite.color.r/255.0;
 		m_VertexArray[array_top + i * vertex_size + 3] = sprite.color.g/255.0;

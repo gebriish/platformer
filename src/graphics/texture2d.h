@@ -1,11 +1,6 @@
 #pragma once
 #include <cstdint>
-
-enum class TextureFiltering
-{
-	LINEAR 	= 0,
-	NEAREST = 1,
-};
+#include "texturespec.h"
 
 class Texture2D
 {

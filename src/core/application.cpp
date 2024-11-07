@@ -2,8 +2,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <thread>
-#include <chrono>
 
 Application* Application::s_Instance = nullptr;
 float deltaTime = 0.0;
