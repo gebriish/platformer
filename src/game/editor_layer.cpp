@@ -7,6 +7,13 @@
 
 void EditorLayer::onAttach()
 {
+
+	m_EditorActionMap.bindKey("Left", KEY_A);
+	m_EditorActionMap.bindKey("Left", KEY_LEFT);
+
+	m_EditorActionMap.bindKey("Right", KEY_D);
+	m_EditorActionMap.bindKey("Right", KEY_RIGHT);
+
 	m_EditorCamera.size = {float(window.width), float(window.height)};
 	m_GameCamera.size = {float(window.width), float(window.height)};
 
@@ -67,6 +74,8 @@ void EditorLayer::onEditorStateChange(const EditorStateEvent& e)
 
 void EditorLayer::_editor_update(float deltaTime)
 {
+	m_EditorActionMap.update();
+
 	auto[x, y] = Input::getCursorPosition();
 
 	camera_controller_locomotion(m_EditorCamera, deltaTime);
@@ -119,7 +128,7 @@ void EditorLayer::_editor_update(float deltaTime)
 
 			grid_line.begin = vec2{x, y} - vec2{m_EditorCamera.scale * scale, -m_EditorCamera.scale * scale};
 			grid_line.end   = vec2{x, y} + vec2{m_EditorCamera.scale * scale, -m_EditorCamera.scale * scale};
-			
+				
 			add_editor_line(m_LineBatch, m_LineShader, m_EditorCamera, grid_line);
 		}
 	}
@@ -147,6 +156,12 @@ void EditorLayer::_editor_update(float deltaTime)
 	use_shader_program(m_SpriteShader);
 	shader_upload_camera2d_data(m_SpriteShader, m_EditorCamera);
 	m_SpriteBatch->drawBatch();
+
+	if(m_EditorActionMap.isActionJustPressed("Left"))
+		std::cout << "left just clicked\n";
+	if(m_EditorActionMap.isActionJustPressed("Right"))
+		std::cout << "right just clicked\n";
+
 }
 
 void EditorLayer::_game_update(float deltaTime)

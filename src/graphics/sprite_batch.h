@@ -23,6 +23,6 @@ private:
 	unsigned int VAO, VBO, EBO;
 	float *m_VertexArray; 
 
-	uint32_t BATCH_SIZE;
+	const uint32_t BATCH_SIZE;
 
 };	

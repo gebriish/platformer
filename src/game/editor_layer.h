@@ -4,12 +4,14 @@
 
 #include <core/window.h>
 #include <core/input.h>
+#include <core/action_map.h>
 
 #include <scene/camera.h>
 
 #include <graphics/shader.h>
 #include <graphics/line_batch2d.h>
 #include <graphics/sprite_batch.h>
+
 
 enum ColorCodes
 {
@@ -109,4 +111,6 @@ private:
 
 	Shader m_SpriteShader;
 	Shader m_LineShader;
+
+	ActionMap m_EditorActionMap;
 };
