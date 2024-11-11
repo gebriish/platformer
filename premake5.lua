@@ -36,11 +36,13 @@ project "Platformer"
     }
 
     filter "configurations:Debug"
+        runtime "debug"
         defines { "DEBUG" }
         symbols "on"
 
         
     filter "configurations:Release"
+        runtime "release"
         defines { "NDEBUG" }
         optimize "speed"
 

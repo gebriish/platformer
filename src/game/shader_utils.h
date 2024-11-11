@@ -1,7 +1,7 @@
 #pragma once
 
 #include <graphics/shader.h>
-#include <scene/camera.h>
+#include <scene/camera2d.h>
 
 void shader_upload_camera2d_data(const Shader& shader, const Camera2D &camera)
 {

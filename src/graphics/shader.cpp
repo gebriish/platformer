@@ -31,6 +31,29 @@ void checkCompileErrors(unsigned int shader, std::string type)
 	}
 }
 
+void load_glsl_shader_from_source(const char* vertex_source, const char* fragment_source, Shader& program)
+{
+	unsigned int vertex, fragment;
+	// vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vertex_source, 0L);
+	glCompileShader(vertex);
+	checkCompileErrors(vertex, "VERTEX");
+	// fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fragment_source, 0L);
+	glCompileShader(fragment);
+	checkCompileErrors(fragment, "FRAGMENT");
+	// shader Program
+	program.ID = glCreateProgram();
+	glAttachShader(program.ID, vertex);
+	glAttachShader(program.ID, fragment);
+	glLinkProgram(program.ID);
+	checkCompileErrors(program.ID, "PROGRAM");
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+}
 
 void load_glsl_shader(const char* vertexPath, const char* fragmentPath, Shader& program)
 {
@@ -62,29 +85,11 @@ void load_glsl_shader(const char* vertexPath, const char* fragmentPath, Shader& 
 	{
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
 	}
+
 	const char *vShaderCode = vertexCode.c_str();
 	const char *fShaderCode = fragmentCode.c_str();
-	// 2. compile shaders
-	unsigned int vertex, fragment;
-	// vertex shader
-	vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &vShaderCode, 0L);
-	glCompileShader(vertex);
-	checkCompileErrors(vertex, "VERTEX");
-	// fragment Shader
-	fragment = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment, 1, &fShaderCode, 0L);
-	glCompileShader(fragment);
-	checkCompileErrors(fragment, "FRAGMENT");
-	// shader Program
-	program.ID = glCreateProgram();
-	glAttachShader(program.ID, vertex);
-	glAttachShader(program.ID, fragment);
-	glLinkProgram(program.ID);
-	checkCompileErrors(program.ID, "PROGRAM");
-	// delete the shaders as they're linked into our program now and no longer necessary
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
+	
+	load_glsl_shader_from_source(vShaderCode, fShaderCode, program);
 }
 
 void use_shader_program(const Shader &program)

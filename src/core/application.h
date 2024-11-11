@@ -20,14 +20,13 @@ public:
 	inline static Application& Get() { return *s_Instance; }
 	inline Window& window() { return m_Window; }
 	
-
 	inline static void exit() { close_window(Get().m_Window); }
-
-private:
-	void onUpdate(float deltaTime);
-	void onEvent(Event& e);
 
 private:
 	LayerManager m_LayerManager;
 	Window m_Window;
+
+private:
+	void update(float deltaTime);
+	void dispatch_event(Event& e);
 };

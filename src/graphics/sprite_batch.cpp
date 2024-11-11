@@ -1,6 +1,7 @@
 #include "sprite_batch.h"
 
 #include <glad/glad.h>
+#include <cmath>
 
 SpriteBatch::SpriteBatch(uint32_t size)
 	: BATCH_SIZE(size)
@@ -91,16 +92,21 @@ bool SpriteBatch::addSprite(const Sprite& sprite)
 				break;
 		}
 
-		m_VertexArray[array_top + i * vertex_size + 0] = pos.x * sprite.size.x + sprite.position.x - sprite.offset.x;
-		m_VertexArray[array_top + i * vertex_size + 1] = pos.y * sprite.size.y + sprite.position.y - sprite.offset.y;
+		vec2 point = vec2(pos.x * sprite.size.x, pos.y * sprite.size.y) - sprite.offset;
+
+		float c_val = (float) cos(sprite.rotation * M_PI / 180);
+		float s_val = (float) sin(sprite.rotation * M_PI / 180);
+
+		m_VertexArray[array_top + i * vertex_size + 0] = point.x * c_val - point.y * s_val + sprite.position.x;
+		m_VertexArray[array_top + i * vertex_size + 1] = point.y * c_val + point.x * s_val + sprite.position.y;
 
 		m_VertexArray[array_top + i * vertex_size + 2] = sprite.color.r/255.0;
 		m_VertexArray[array_top + i * vertex_size + 3] = sprite.color.g/255.0;
 		m_VertexArray[array_top + i * vertex_size + 4] = sprite.color.b/255.0;
 		m_VertexArray[array_top + i * vertex_size + 5] = sprite.color.a/255.0;
 
-		m_VertexArray[array_top + i * vertex_size + 6] = pos.x * texture_coord_size_vec.x + sprite.texture_coord_min.x;
-		m_VertexArray[array_top + i * vertex_size + 7] = (1.0 - pos.y) * texture_coord_size_vec.y + sprite.texture_coord_min.y;
+		m_VertexArray[array_top + i * vertex_size + 6] = (pos.x + 0.5) * texture_coord_size_vec.x + sprite.texture_coord_min.x;
+		m_VertexArray[array_top + i * vertex_size + 7] = (0.5 - pos.y) * texture_coord_size_vec.y + sprite.texture_coord_min.y;
 	}
 
 	m_StackTop++;

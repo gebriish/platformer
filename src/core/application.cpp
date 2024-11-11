@@ -3,8 +3,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <core/logger.h>
+
+
 Application* Application::s_Instance = nullptr;
 float deltaTime = 0.0;
+
 
 Application::Application(const char* title, uint16_t width, uint16_t height, int window_flags)
 {
@@ -15,13 +19,21 @@ Application::Application(const char* title, uint16_t width, uint16_t height, int
 	m_Window.height = height;
 
 	initialize_window(m_Window, window_flags);
-	set_event_callback(m_Window, std::bind(&Application::onEvent, this, std::placeholders::_1));
+	set_event_callback(m_Window, std::bind(&Application::dispatch_event, this, std::placeholders::_1));
+
+#ifdef DEBUG
+	Logger::log(LogLevel::INFO, "Application created [\'%s\', %d, %d]", title, width, height);
+#endif
 }
 
 Application::~Application()
 {
 	m_LayerManager.cleanup();
 	destroy_window(m_Window);
+
+#ifdef DEBUG
+	Logger::log(LogLevel::INFO, "Application close");
+#endif
 }
 
 void Application::run()
@@ -34,7 +46,7 @@ void Application::run()
 		deltaTime = end_time - begin_time;
 		begin_time = end_time;
 		
-		this->onUpdate(deltaTime);
+		this->update(deltaTime);
 
 		swap_buffer(m_Window);
 	}
@@ -46,12 +58,12 @@ uint64_t Application::framerate() const
 }
 
 
-void Application::onEvent(Event& e)
+void Application::dispatch_event(Event& e)
 {
 	m_LayerManager.dispatchEvent(e);
 }
 
-void Application::onUpdate(float dt)
+void Application::update(float dt)
 {
 	m_LayerManager.callUpdate(dt);
 }

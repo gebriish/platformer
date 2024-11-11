@@ -12,6 +12,10 @@ enum class EventType
 
 struct Event
 {
+    Event(EventType type)
+        : type(type)
+    {}
+
 	EventType type; 
 
 	union {
@@ -22,8 +26,6 @@ struct Event
         struct { double xScroll, yScroll; } scrollData;
         struct { char character; } charData;
     };
-
-	Event(EventType eventType) : type(eventType) {}
 
 	static Event CreateResizeEvent(int width, int height);
     static Event CreateScrollEvent(double x, double y);

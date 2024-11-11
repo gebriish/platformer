@@ -4,6 +4,7 @@ struct Shader {
 	unsigned int ID;
 };
 
+void load_glsl_shader_from_source(const char* vertex_source, const char* fragment_source, Shader& program);
 void load_glsl_shader(const char* vertexPath, const char* fragmentPath, Shader& program);
 void use_shader_program(const Shader& program);
 void delete_shader_program(const Shader& program);
